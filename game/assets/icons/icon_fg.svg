@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="432" height="432" viewBox="0 0 432 432">
+  <!-- Adaptive foreground: art kept inside the 66% (~288px) center safe zone. -->
+  <circle cx="216" cy="186" r="66" fill="none" stroke="#e8d9c4" stroke-width="15"/>
+  <path d="M144 318c0-48 33-78 72-78s72 30 72 78" fill="none" stroke="#e8d9c4" stroke-width="15" stroke-linecap="round"/>
+  <circle cx="288" cy="276" r="27" fill="#c98b6b"/>
+</svg>

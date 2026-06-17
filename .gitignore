@@ -11,6 +11,12 @@ build/
 *.ipa
 export.cfg.local
 
+# Signing secrets — NEVER commit keystores or their passwords.
+# export_presets.cfg IS committed (no secrets); the .local overlay is not.
+*.keystore
+*.jks
+keystore.properties
+
 # OS / editor
 .DS_Store
 Thumbs.db
