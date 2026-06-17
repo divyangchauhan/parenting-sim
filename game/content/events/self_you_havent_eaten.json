@@ -1,0 +1,24 @@
+{
+  "id": "self_you_havent_eaten",
+  "source": "self",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 3,
+  "prompt": "It's nine. You haven't eaten anything that wasn't theirs.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Make a real plate. Sit down for it.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "wellbeing": 2 }
+    },
+    {
+      "text": "Stand at the counter. Crackers. Fine.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": -1 }
+    }
+  ]
+}

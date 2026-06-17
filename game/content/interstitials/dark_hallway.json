@@ -1,0 +1,14 @@
+{
+  "id": "dark_hallway",
+  "after_day_min": 1,
+  "select_when": {
+    "state_min": {},
+    "state_max": { "wellbeing": -3 }
+  },
+  "lines": [
+    "The house is finally quiet.",
+    "You stand in the hallway longer than you need to, listening to them breathe.",
+    "You can't remember the last thing you did just for yourself. You're too tired to want to."
+  ],
+  "art": "hallway_night"
+}

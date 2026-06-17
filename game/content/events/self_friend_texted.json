@@ -1,0 +1,31 @@
+{
+  "id": "self_friend_texted",
+  "source": "self",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 2,
+  "prompt": "Your friend again: \"still alive in there? miss you.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Call. Just five minutes of not-this.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "wellbeing": 2, "standing": -1 }
+    },
+    {
+      "text": "\"alive! buried. soon i promise\"",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1 }
+    },
+    {
+      "text": "Read it. Mean to reply. Don't.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": -1 },
+      "sets_flags": ["left_them_on_read"]
+    }
+  ]
+}

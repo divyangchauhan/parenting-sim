@@ -1,0 +1,31 @@
+{
+  "id": "partner_bedtime_handoff",
+  "source": "partner",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "\"Can you take bedtime? I'm completely wiped.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"Go lie down. I've got them.\"",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "partnership": 2, "connection": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "\"Sure. You owe me tomorrow.\"",
+      "tone": "neutral",
+      "cost": { "time": 2, "energy": 1, "patience": 0 },
+      "effects": { "partnership": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "\"I'm wiped too. We're both wiped.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "partnership": -2 },
+      "sets_flags": ["bedtime_unhandled"]
+    }
+  ]
+}

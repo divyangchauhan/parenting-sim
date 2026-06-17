@@ -1,0 +1,30 @@
+{
+  "id": "work_deck_due",
+  "source": "work",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "The deck is due tonight. It is not close to done.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Stay up. Finish it properly.",
+      "tone": "neutral",
+      "cost": { "time": 3, "energy": 3, "patience": 0 },
+      "gated_by": { "energy_min": 3 },
+      "effects": { "standing": 3, "wellbeing": -2 }
+    },
+    {
+      "text": "Send what you have. Note the gaps.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "effects": { "standing": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "It can wait. Bed.",
+      "tone": "warm",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "standing": -2, "wellbeing": 2 }
+    }
+  ]
+}

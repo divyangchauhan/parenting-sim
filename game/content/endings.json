@@ -1,0 +1,46 @@
+[
+  {
+    "id": "the_stories",
+    "title": "They'll remember the stories.",
+    "match": { "state_min": { "connection": 6 } },
+    "priority": 30,
+    "lines": [
+      "You were tired every single night.",
+      "You read the long one anyway. You did the voices anyway.",
+      "They won't remember the laundry that didn't get folded. They'll remember you, on the floor, doing the voices."
+    ]
+  },
+  {
+    "id": "held_together",
+    "title": "You held it together. Barely. That counts.",
+    "match": { "state_max": { "wellbeing": -4 } },
+    "priority": 20,
+    "lines": [
+      "Everyone got fed. Everyone got to bed. The work got done, mostly.",
+      "Nobody saw what it cost you, because you made sure of that.",
+      "You are running on fumes and love. It is not sustainable. It held, this week."
+    ]
+  },
+  {
+    "id": "something_quiet",
+    "title": "Something quiet went missing this week.",
+    "match": { "state_max": { "connection": -3 } },
+    "priority": 20,
+    "lines": [
+      "You were in the room. You weren't always there.",
+      "They stopped asking you to watch somewhere around Wednesday.",
+      "Nothing broke. Nothing you could point to. Just a small, quiet distance, the kind that grows if you let it."
+    ]
+  },
+  {
+    "id": "enough",
+    "title": "Enough.",
+    "match": { "state_min": {}, "state_max": {} },
+    "priority": 0,
+    "lines": [
+      "Some nights you were the parent you meant to be. Some nights you weren't.",
+      "You traded, and traded, and there was never quite enough of you to go around.",
+      "You loved them through all of it. This week, that was enough. It usually has to be."
+    ]
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "id": "work_quick_call",
+  "source": "work",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "Manager: \"Quick call at 6? Should only take ten.\" (It won't.)",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Take it in the other room. Door shut.",
+      "tone": "neutral",
+      "cost": { "time": 3, "energy": 1, "patience": 0 },
+      "effects": { "standing": 2, "connection": -1 }
+    },
+    {
+      "text": "\"Can it be first thing tomorrow?\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "standing": -1, "connection": 1, "wellbeing": 1 }
+    },
+    {
+      "text": "Let it ring out. Deal with it later.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "standing": -2 },
+      "sets_flags": ["ducked_the_call"]
+    }
+  ]
+}

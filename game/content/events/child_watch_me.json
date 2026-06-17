@@ -1,0 +1,24 @@
+{
+  "id": "child_watch_me",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "\"Watch me! Watch me do it! Are you watching?\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Put the phone face-down. Watch. Clap.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "connection": 2 }
+    },
+    {
+      "text": "Glance up. \"Wow, buddy.\" Keep typing.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1, "standing": 1 }
+    }
+  ]
+}
