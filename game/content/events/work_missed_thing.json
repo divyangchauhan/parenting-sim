@@ -1,0 +1,32 @@
+{
+  "id": "work_missed_thing",
+  "source": "work",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "\"We needed your input on the call you skipped. Decision got made without you.\"",
+  "conditions": {
+    "flags_any": ["ducked_the_call"]
+  },
+  "responses": [
+    {
+      "text": "Stay late, write the case for reopening it. Properly.",
+      "tone": "neutral",
+      "cost": { "time": 3, "energy": 3, "patience": 0 },
+      "gated_by": { "energy_min": 3 },
+      "effects": { "standing": 2, "wellbeing": -2, "connection": -1 }
+    },
+    {
+      "text": "\"Noted. I'll make the next one.\" Let it go.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "standing": -1 }
+    },
+    {
+      "text": "\"Then maybe stop scheduling things at bath time.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "standing": -2, "wellbeing": 1 }
+    }
+  ]
+}

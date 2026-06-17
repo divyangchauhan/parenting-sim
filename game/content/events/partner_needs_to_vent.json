@@ -1,0 +1,30 @@
+{
+  "id": "partner_needs_to_vent",
+  "source": "partner",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "\"Can I just tell you about my day? I don't need you to fix it. I just need you to hear it.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Put your phone down. Turn toward them. Listen.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "partnership": 2, "wellbeing": 1 }
+    },
+    {
+      "text": "Listen with half an ear while you fold the washing.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1, "standing": 1 }
+    },
+    {
+      "text": "\"Can it wait? I have nothing left for anyone else's day.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "partnership": -2 }
+    }
+  ]
+}

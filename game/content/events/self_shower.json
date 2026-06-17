@@ -1,0 +1,23 @@
+{
+  "id": "self_shower",
+  "source": "self",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 2,
+  "prompt": "You catch your reflection. You can't remember if you showered today. Or yesterday.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Take the long one. Hot water until it runs cool.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 2 }
+    },
+    {
+      "text": "Two minutes, in and out. Better than nothing.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1 }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "partner_bedtime_fallout",
+  "source": "partner",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "\"They didn't go down till ten. I did it on no sleep. You just... checked out.\"",
+  "conditions": {
+    "flags_any": ["bedtime_unhandled"]
+  },
+  "responses": [
+    {
+      "text": "\"That wasn't fair. Tonight's mine. Go to bed early.\"",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "partnership": 2, "wellbeing": -1 }
+    },
+    {
+      "text": "\"I know. I had nothing left. I'm sorry.\"",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1 }
+    },
+    {
+      "text": "\"We were both wiped. It's not a competition.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "partnership": -2 }
+    }
+  ]
+}

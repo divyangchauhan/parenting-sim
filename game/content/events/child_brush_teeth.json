@@ -1,0 +1,30 @@
+{
+  "id": "child_brush_teeth",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 3,
+  "prompt": "Toothbrush in hand, running in circles. \"Catch me first! You have to catch me!\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Be the toothbrush monster. Chase, roar, brush.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "connection": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "\"Stand still, please.\" Hold the chin, get it done.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "effects": {}
+    },
+    {
+      "text": "\"I am too tired for this. Open your mouth.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "connection": -1 }
+    }
+  ]
+}

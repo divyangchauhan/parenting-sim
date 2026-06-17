@@ -1,0 +1,25 @@
+{
+  "id": "partner_brought_you_tea",
+  "source": "partner",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 3,
+  "prompt": "A mug appears at your elbow, made the way you like it. \"You looked like you needed it.\"",
+  "conditions": {
+    "state_min": { "partnership": 3 }
+  },
+  "responses": [
+    {
+      "text": "Catch their hand before they go. \"Thank you. Really.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 2, "wellbeing": 2 }
+    },
+    {
+      "text": "\"You're a lifesaver.\" Mean it, even half-distracted.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1, "wellbeing": 1 }
+    }
+  ]
+}

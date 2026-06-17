@@ -1,0 +1,31 @@
+{
+  "id": "child_spilled_juice",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "The full cup goes over. They look at you before they look at the floor.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"Cups are slippery. Grab the towel, we'll get it.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "security": 1, "connection": 1 }
+    },
+    {
+      "text": "Wipe it yourself. \"It's fine. Be careful.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": {}
+    },
+    {
+      "text": "\"Every single day. Can you watch what you're doing?\"",
+      "tone": "curt",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "wellbeing": -1 },
+      "sets_flags": ["snapped_over_nothing"]
+    }
+  ]
+}

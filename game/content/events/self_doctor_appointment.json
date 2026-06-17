@@ -1,0 +1,24 @@
+{
+  "id": "self_doctor_appointment",
+  "source": "self",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 2,
+  "prompt": "The reminder again: that appointment you keep rebooking. The one for you.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Actually keep it this time. Block the morning.",
+      "tone": "warm",
+      "cost": { "time": 3, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 2, "standing": -1 }
+    },
+    {
+      "text": "Push it two weeks. Again. It's not urgent.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": -1 },
+      "sets_flags": ["rebooked_again"]
+    }
+  ]
+}

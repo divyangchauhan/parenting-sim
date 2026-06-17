@@ -2,19 +2,53 @@
   {
     "id": "the_stories",
     "title": "They'll remember the stories.",
-    "match": { "state_min": { "connection": 6 } },
-    "priority": 30,
+    "match": { "state_min": { "connection": 7 }, "state_max": { "wellbeing": -3 } },
+    "priority": 40,
     "lines": [
       "You were tired every single night.",
       "You read the long one anyway. You did the voices anyway.",
-      "They won't remember the laundry that didn't get folded. They'll remember you, on the floor, doing the voices."
+      "They won't remember the laundry that didn't get folded. They'll remember you, on the floor, doing the voices.",
+      "It cost you something. It always does. You'd pay it again."
+    ]
+  },
+  {
+    "id": "close_and_steady",
+    "title": "They felt held this week.",
+    "match": { "state_min": { "connection": 5, "security": 4 } },
+    "priority": 35,
+    "lines": [
+      "Nothing dramatic happened. That was the whole achievement.",
+      "They were heard when they were sad and caught when they fell.",
+      "A child who feels safe doesn't know to thank you for it. That's how you know you did it right."
+    ]
+  },
+  {
+    "id": "partnership_frayed",
+    "title": "You and them, in separate trenches.",
+    "match": { "state_max": { "partnership": -5 } },
+    "priority": 30,
+    "lines": [
+      "You were a good team once. This week you were two people surviving the same house.",
+      "Passing in the hallway. Dividing the labor. Forgetting the rest.",
+      "Nobody's fault. Just what didn't get tended. The kind of thing you can still come back from, if you decide to."
+    ]
+  },
+  {
+    "id": "child_insecure",
+    "title": "They got quieter this week.",
+    "match": { "state_max": { "security": -5 } },
+    "priority": 30,
+    "lines": [
+      "They stopped coming to you with the small things first.",
+      "Not because you stopped loving them. Because the answers got sharp, and they learned.",
+      "Children are watching all the time, even when you're too tired to be watched. Especially then."
     ]
   },
   {
     "id": "held_together",
     "title": "You held it together. Barely. That counts.",
-    "match": { "state_max": { "wellbeing": -4 } },
-    "priority": 20,
+    "match": { "state_max": { "wellbeing": -6 } },
+    "priority": 25,
     "lines": [
       "Everyone got fed. Everyone got to bed. The work got done, mostly.",
       "Nobody saw what it cost you, because you made sure of that.",
@@ -24,8 +58,8 @@
   {
     "id": "something_quiet",
     "title": "Something quiet went missing this week.",
-    "match": { "state_max": { "connection": -3 } },
-    "priority": 20,
+    "match": { "state_max": { "connection": -4 } },
+    "priority": 25,
     "lines": [
       "You were in the room. You weren't always there.",
       "They stopped asking you to watch somewhere around Wednesday.",

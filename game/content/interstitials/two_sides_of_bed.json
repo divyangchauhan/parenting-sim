@@ -1,0 +1,12 @@
+{
+  "id": "two_sides_of_bed",
+  "after_day_min": 3,
+  "select_when": {
+    "state_max": { "partnership": -3 }
+  },
+  "lines": [
+    "Two phones charging. Two backs turned.",
+    "There's a whole conversation neither of you has the energy to start."
+  ],
+  "art": "bed_two_backs"
+}

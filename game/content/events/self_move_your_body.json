@@ -1,0 +1,24 @@
+{
+  "id": "self_move_your_body",
+  "source": "self",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 1,
+  "prompt": "Twenty minutes opened up. You could run. You could also just lie face-down on the rug.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Shoes on. A short loop around the block. Just move.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "wellbeing": 2, "standing": -1 }
+    },
+    {
+      "text": "The rug. The rug is right there. The rug wins.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1 }
+    }
+  ]
+}

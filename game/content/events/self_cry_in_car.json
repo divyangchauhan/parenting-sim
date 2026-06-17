@@ -1,0 +1,32 @@
+{
+  "id": "self_cry_in_car",
+  "source": "self",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 3,
+  "prompt": "You're parked in the driveway. Engine off. You don't go in right away.",
+  "conditions": {
+    "state_max": { "wellbeing": -4 }
+  },
+  "responses": [
+    {
+      "text": "Let it come. Five minutes. Then wipe your face and go in.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 2 }
+    },
+    {
+      "text": "Breathe. Count to ten. Find the steady voice. Go in.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1 }
+    },
+    {
+      "text": "Swallow it. They're waiting. No time for this.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": -2 },
+      "sets_flags": ["pushed_it_down"]
+    }
+  ]
+}

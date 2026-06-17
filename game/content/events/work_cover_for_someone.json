@@ -1,0 +1,31 @@
+{
+  "id": "work_cover_for_someone",
+  "source": "work",
+  "day_min": 2,
+  "day_max": 6,
+  "priority": 5,
+  "prompt": "\"Any chance you could cover Dana's presentation? You're the obvious pick.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"Yeah, I've got it.\" The obvious pick always says yes.",
+      "tone": "neutral",
+      "cost": { "time": 3, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "standing": 3, "wellbeing": -2, "connection": -1 }
+    },
+    {
+      "text": "\"I can take part of it. Not all of it.\"",
+      "tone": "neutral",
+      "cost": { "time": 2, "energy": 1, "patience": 0 },
+      "effects": { "standing": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "\"I can't this week. Things are full at home.\"",
+      "tone": "warm",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "standing": -2, "wellbeing": 1 }
+    }
+  ]
+}

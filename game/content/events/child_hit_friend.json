@@ -1,0 +1,31 @@
+{
+  "id": "child_hit_friend",
+  "source": "child",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "The teacher pulls you aside. There was hitting today. Yours did the hitting.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "On the way home, ask what happened first. Listen all the way through.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "connection": 2, "security": 1 }
+    },
+    {
+      "text": "\"We don't hit. You'll apologize tomorrow.\" Leave it there.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "effects": { "security": 1 }
+    },
+    {
+      "text": "\"What is wrong with you? You know better.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -2, "wellbeing": -1 },
+      "sets_flags": ["shamed_them"]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "child_why_questions",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 3,
+  "prompt": "\"Why is the moon following us? Why is it day there and night somewhere? Why?\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Actually try to explain. Watch them light up.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "connection": 2 }
+    },
+    {
+      "text": "\"That's a really good question. What do you think?\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "connection": 1 }
+    },
+    {
+      "text": "\"I don't know, bud. It just does.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1 }
+    }
+  ]
+}

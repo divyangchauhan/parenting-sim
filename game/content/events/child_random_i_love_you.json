@@ -1,0 +1,23 @@
+{
+  "id": "child_random_i_love_you",
+  "source": "child",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 2,
+  "prompt": "Mid-game, not looking up: \"You're my best one.\" Then back to the blocks.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Get down on the floor. \"You're my best one too.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "connection": 2, "wellbeing": 2 }
+    },
+    {
+      "text": "\"Love you too, bug.\" Keep doing the dishes.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": 1, "wellbeing": 1 }
+    }
+  ]
+}

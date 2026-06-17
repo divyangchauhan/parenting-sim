@@ -1,0 +1,14 @@
+{
+  "id": "midweek_clock",
+  "after_day_min": 4,
+  "select_when": {
+    "state_min": {},
+    "state_max": {}
+  },
+  "lines": [
+    "Wednesday, or maybe Thursday. The days have started to run together.",
+    "The clock says it's late. Your body said that hours ago.",
+    "Three more to go."
+  ],
+  "art": "clock_late"
+}

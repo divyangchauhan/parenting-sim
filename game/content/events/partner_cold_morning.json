@@ -1,0 +1,32 @@
+{
+  "id": "partner_cold_morning",
+  "source": "partner",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "They make their coffee, not yours. Pass you in the kitchen without a word.",
+  "conditions": {
+    "flags_any": ["kept_score"]
+  },
+  "responses": [
+    {
+      "text": "\"Hey. About last night. I was a jerk. I'm sorry.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "partnership": 3 }
+    },
+    {
+      "text": "Make their coffee anyway. Set it down. Say nothing.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1 }
+    },
+    {
+      "text": "Match the silence. You're not the only one who was tired.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": -2 }
+    }
+  ]
+}

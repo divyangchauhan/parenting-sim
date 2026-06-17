@@ -1,0 +1,31 @@
+{
+  "id": "child_wont_eat_dinner",
+  "source": "child",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "\"I don't like it. It's touching the other thing.\" The plate hasn't moved.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Slide the things apart. \"Three bites. I'll count with you.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "connection": 1, "security": 1 }
+    },
+    {
+      "text": "\"You eat what you eat. No snacks later, then.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": {}
+    },
+    {
+      "text": "Hand them the tablet. They'll eat while it plays.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1, "wellbeing": 1 },
+      "sets_flags": ["screen_at_dinner"]
+    }
+  ]
+}

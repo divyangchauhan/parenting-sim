@@ -1,0 +1,30 @@
+{
+  "id": "partner_date_night",
+  "source": "partner",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "\"My mum offered to take them Friday. We could actually go somewhere. Just us.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"Book it. I'll wear the shirt you like.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "partnership": 3, "wellbeing": 1, "standing": -1 }
+    },
+    {
+      "text": "\"Maybe. Let's see how the week lands.\"",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": -1 }
+    },
+    {
+      "text": "\"Honestly? I'd rather just sleep.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": -2, "wellbeing": 1 }
+    }
+  ]
+}

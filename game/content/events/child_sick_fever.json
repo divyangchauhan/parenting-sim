@@ -1,0 +1,31 @@
+{
+  "id": "child_sick_fever",
+  "source": "child",
+  "day_min": 3,
+  "day_max": 6,
+  "priority": 9,
+  "prompt": "Their forehead is too warm. 101.4. There's a thing at work you can't move.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Cancel everything. Couch, blanket, the good cartoons.",
+      "tone": "warm",
+      "cost": { "time": 3, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "security": 2, "connection": 2, "standing": -3 }
+    },
+    {
+      "text": "Dose them, set up the sitter, log on between checks.",
+      "tone": "neutral",
+      "cost": { "time": 2, "energy": 2, "patience": 1 },
+      "effects": { "security": 1, "standing": -1, "wellbeing": -1 }
+    },
+    {
+      "text": "Medicine and a screen. You have to take the meeting.",
+      "tone": "curt",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "effects": { "security": -1, "standing": 1, "connection": -1 },
+      "sets_flags": ["worked_through_sick_day"]
+    }
+  ]
+}

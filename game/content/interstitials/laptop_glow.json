@@ -1,0 +1,14 @@
+{
+  "id": "laptop_glow",
+  "after_day_min": 2,
+  "select_when": {
+    "state_min": { "standing": 4 },
+    "state_max": { "wellbeing": -2 }
+  },
+  "lines": [
+    "The laptop glow is the only light in the house.",
+    "You're good at this. You're so good at this.",
+    "You can't remember if you said goodnight."
+  ],
+  "art": "laptop_dark_room"
+}

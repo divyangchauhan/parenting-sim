@@ -1,0 +1,30 @@
+{
+  "id": "work_late_email",
+  "source": "work",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "8:47 PM. Subject line in all caps from the one client who does that.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Open it. Handle it now so it isn't tomorrow's first thing.",
+      "tone": "neutral",
+      "cost": { "time": 2, "energy": 2, "patience": 1 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "standing": 2, "wellbeing": -1, "connection": -1 }
+    },
+    {
+      "text": "Skim it. Flag it. \"On it first thing.\" Close the laptop.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "standing": 1 }
+    },
+    {
+      "text": "Don't open it. It can be a tomorrow problem.",
+      "tone": "warm",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "standing": -1, "wellbeing": 1 }
+    }
+  ]
+}

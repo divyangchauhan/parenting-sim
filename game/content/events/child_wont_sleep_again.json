@@ -1,0 +1,31 @@
+{
+  "id": "child_wont_sleep_again",
+  "source": "child",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "Third time out of bed. \"I need water. I need the other blanket. I need you.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Water, blanket, two minutes of back rubs. No words.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 1 },
+      "gated_by": { "energy_min": 2, "patience_min": 2 },
+      "effects": { "security": 1, "connection": 1, "wellbeing": -2 }
+    },
+    {
+      "text": "Walk them back without a word. Tuck. Leave.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "effects": {}
+    },
+    {
+      "text": "\"Bed. Now. I mean it.\" The voice you swore you wouldn't use.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -1, "wellbeing": -1 },
+      "sets_flags": ["used_the_voice"]
+    }
+  ]
+}

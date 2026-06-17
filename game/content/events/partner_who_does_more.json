@@ -1,0 +1,32 @@
+{
+  "id": "partner_who_does_more",
+  "source": "partner",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "\"I feel like I'm doing all of it lately.\" The dishes are still in the sink behind them.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"You're right. Tell me what to take off your plate.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "partnership": 3, "wellbeing": -1 }
+    },
+    {
+      "text": "\"I know. I see it. I'm drowning too.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1 }
+    },
+    {
+      "text": "\"Are you keeping score now? Because I could too.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "partnership": -3, "wellbeing": -1 },
+      "sets_flags": ["kept_score"],
+      "followup": "partner_cold_morning"
+    }
+  ]
+}

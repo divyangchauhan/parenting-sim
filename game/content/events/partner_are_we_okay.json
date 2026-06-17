@@ -1,0 +1,32 @@
+{
+  "id": "partner_are_we_okay",
+  "source": "partner",
+  "day_min": 5,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "Lights off, both staring at the ceiling. \"Are we okay? Like, actually okay?\"",
+  "conditions": {
+    "state_max": { "partnership": -3 }
+  },
+  "responses": [
+    {
+      "text": "Find their hand in the dark. \"We're tired. We're not broken. I'm still here.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "partnership": 3, "wellbeing": 1 }
+    },
+    {
+      "text": "\"Yeah. We're okay. It's just a hard stretch.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "partnership": 1 }
+    },
+    {
+      "text": "\"I'm too tired to have this conversation right now.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "partnership": -2 }
+    }
+  ]
+}
