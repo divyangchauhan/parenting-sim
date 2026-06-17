@@ -1,0 +1,218 @@
+extends Control
+## DayShift — the core loop screen. Owns the live day queue.
+##
+## On start it asks GameState to open the day and EventDeck for the day's
+## eligible cards, then presents them one at a time. It is the *only* owner of
+## the runtime queue: consumption, deferral re-surfacing, and inserting deferred
+## consequence follow-ups all happen here. Cards render data and emit intent;
+## GameState resolves the numbers. DayShift sits between them.
+##
+## The day ends when the clock runs out (GameState.time <= 0) or the queue
+## empties. Routing to the interstitial / ending screens is a later PR — there
+## is a clearly marked TODO hook for that transition.
+
+## Emitted once the day's loop has finished and GameState.end_day() has run.
+signal day_finished(day: int)
+
+## Emitted each time a Card is presented, with the live Card node. The headless
+## autoplayer connects to this to drive choices; normal play ignores it.
+signal card_presented(card_node)
+
+## How many slots ahead of the front a follow-up consequence is inserted.
+const FOLLOWUP_INSERT_OFFSET := 2
+
+## A card may be deferred at most this many times; after that it is forced to
+## the front and must be answered, so deferral can never loop forever.
+const MAX_DEFERS_PER_CARD := 2
+
+const CARD_SCENE := preload("res://scenes/Card.tscn")
+
+## Day-1 = Monday weekday labels for the day-open frame line.
+const WEEKDAYS := ["Monday", "Tuesday", "Wednesday", "Thursday",
+	"Friday", "Saturday", "Sunday"]
+
+@onready var _day_label: Label = %DayLabel
+@onready var _card_container: Control = %CardContainer
+
+## Live queue of card Dictionaries for the current day (front = next up).
+var _queue: Array = []
+
+## Card ids already seen/answered this day (so follow-ups don't re-fire).
+var _seen_ids: Dictionary = {}
+
+## Card ids currently sitting in _queue (cheap membership / dedup check).
+var _queued_ids: Dictionary = {}
+
+## id -> times deferred this day, to enforce MAX_DEFERS_PER_CARD.
+var _defer_counts: Dictionary = {}
+
+## The card node on screen right now (null between cards).
+var _current_card: Node = null
+
+## Guards re-entrancy while a card is animating out / the next is spawning.
+var _advancing := false
+
+var _day_over := false
+
+
+func _ready() -> void:
+	GameState.run_ended.connect(_on_run_ended)
+	start_shift()
+
+
+## Open the day and begin presenting its queue. Public so a future menu / the
+## autoplay harness can (re)start a shift explicitly.
+func start_shift() -> void:
+	GameState.start_day()
+
+	_queue = EventDeck.build_day_queue(GameState.day)
+	_seen_ids.clear()
+	_queued_ids.clear()
+	_defer_counts.clear()
+	_day_over = false
+
+	for card in _queue:
+		_queued_ids[String(card.get("id", ""))] = true
+
+	_update_day_label()
+	_present_next()
+
+
+func _update_day_label() -> void:
+	var weekday: String = WEEKDAYS[(GameState.day - 1) % WEEKDAYS.size()]
+	_day_label.text = "Day %d. %s." % [GameState.day, weekday]
+
+
+# ---------------------------------------------------------------------------
+# Presenting cards
+# ---------------------------------------------------------------------------
+
+## Pop the front of the queue and show it, or end the day if there's nothing
+## left / the clock is spent.
+func _present_next() -> void:
+	if _day_over:
+		return
+
+	if GameState.time <= 0 or _queue.is_empty():
+		_finish_day()
+		return
+
+	var card: Dictionary = _queue.pop_front()
+	_queued_ids.erase(String(card.get("id", "")))
+
+	var card_node: Node = CARD_SCENE.instantiate()
+	_card_container.add_child(card_node)
+	# CardContainer is a plain Control, so size the card to fill it ourselves.
+	if card_node is Control:
+		(card_node as Control).set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_current_card = card_node
+
+	card_node.setup(card)
+	card_node.chosen.connect(_on_card_chosen.bind(card))
+	card_node.deferred.connect(_on_card_deferred.bind(card))
+
+	if card_node.has_method("play_enter"):
+		card_node.play_enter()
+
+	card_presented.emit(card_node)
+
+
+# ---------------------------------------------------------------------------
+# Intent handlers
+# ---------------------------------------------------------------------------
+
+func _on_card_chosen(response: Dictionary, card: Dictionary) -> void:
+	if _advancing:
+		return
+	_advancing = true
+
+	GameState.apply_response(response)
+	_seen_ids[String(card.get("id", ""))] = true
+
+	_maybe_enqueue_followup(response)
+
+	await _dismiss_current()
+	_advancing = false
+	_present_next()
+
+
+func _on_card_deferred(card: Dictionary) -> void:
+	if _advancing:
+		return
+	_advancing = true
+
+	var id := String(card.get("id", ""))
+	_defer_counts[id] = int(_defer_counts.get(id, 0)) + 1
+
+	if _defer_counts[id] <= MAX_DEFERS_PER_CARD:
+		# Re-surface later: push to the back of the queue.
+		_queue.push_back(card)
+		_queued_ids[id] = true
+	else:
+		# Forced to the front; it must be answered next. (We still present a
+		# fresh next card here; on its turn the player can't defer past the cap
+		# because we re-front it.)
+		_queue.push_front(card)
+		_queued_ids[id] = true
+
+	await _dismiss_current()
+	_advancing = false
+	_present_next()
+
+
+## Insert a deferred-consequence follow-up a few slots in, if it exists and
+## hasn't already been seen or queued this day.
+func _maybe_enqueue_followup(response: Dictionary) -> void:
+	var followup := String(response.get("followup", ""))
+	if followup.is_empty():
+		return
+	if not EventDeck.has_card(followup):
+		return
+	if _seen_ids.has(followup) or _queued_ids.has(followup):
+		return
+
+	var card := EventDeck.get_card(followup)
+	if card.is_empty():
+		return
+
+	var insert_at: int = mini(FOLLOWUP_INSERT_OFFSET, _queue.size())
+	_queue.insert(insert_at, card)
+	_queued_ids[followup] = true
+
+
+## Animate the current card out (if it supports it) and free it.
+func _dismiss_current() -> void:
+	if _current_card == null:
+		return
+	var card := _current_card
+	_current_card = null
+	if card.has_method("play_exit"):
+		await card.play_exit()
+	card.queue_free()
+
+
+# ---------------------------------------------------------------------------
+# Day / run boundaries
+# ---------------------------------------------------------------------------
+
+func _finish_day() -> void:
+	if _day_over:
+		return
+	_day_over = true
+
+	var finished_day := GameState.day
+	GameState.end_day()
+
+	print("Day %d done. Energy %d/%d, Patience %d/%d." % [
+		finished_day, GameState.energy, GameState.MAX_ENERGY,
+		GameState.patience, GameState.MAX_PATIENCE])
+
+	day_finished.emit(finished_day)
+
+	# TODO(PR-06/07): route here to the Interstitial for this day, then the next
+	# DayShift, and to the Ending screen once run_ended() fires. For now we just
+	# stop after emitting day_finished (the autoplay harness chains days itself).
+
+
+func _on_run_ended() -> void:
+	print("run ended")

@@ -1,0 +1,87 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0meterhudenough0"]
+
+[ext_resource type="Script" path="res://scenes/MetersHUD.gd" id="1_metershud"]
+
+[node name="MetersHUD" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 96.0
+grow_horizontal = 2
+script = ExtResource("1_metershud")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="Row" type="HBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TimeBlock" type="VBoxContainer" parent="Margin/Row"]
+layout_mode = 2
+
+[node name="TimeLabel" type="Label" parent="Margin/Row/TimeBlock"]
+layout_mode = 2
+text = "Time"
+
+[node name="TimeValue" type="Label" parent="Margin/Row/TimeBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "12:00"
+
+[node name="EnergyBlock" type="VBoxContainer" parent="Margin/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EnergyLabel" type="Label" parent="Margin/Row/EnergyBlock"]
+layout_mode = 2
+text = "Energy"
+
+[node name="EnergyBar" type="ProgressBar" parent="Margin/Row/EnergyBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
+[node name="EnergyValue" type="Label" parent="Margin/Row/EnergyBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "10 / 10"
+
+[node name="PatienceBlock" type="VBoxContainer" parent="Margin/Row"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PatienceLabel" type="Label" parent="Margin/Row/PatienceBlock"]
+layout_mode = 2
+text = "Patience"
+
+[node name="PatienceBar" type="ProgressBar" parent="Margin/Row/PatienceBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 8.0
+value = 8.0
+show_percentage = false
+
+[node name="PatienceValue" type="Label" parent="Margin/Row/PatienceBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "8 / 8"
