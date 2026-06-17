@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.07, 0.07, 0.09, 1)
+color = Color(0.086, 0.082, 0.094, 1)
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -39,6 +39,7 @@ theme_override_constants/separation = 24
 [node name="Heading" type="Label" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Heading"
 text = "Settings"
 horizontal_alignment = 1
 

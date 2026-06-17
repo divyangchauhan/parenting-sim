@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.07, 0.07, 0.09, 1)
+color = Color(0.086, 0.082, 0.094, 1)
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -28,18 +28,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 48
-theme_override_constants/margin_top = 120
+theme_override_constants/margin_top = 132
 theme_override_constants/margin_right = 48
-theme_override_constants/margin_bottom = 96
+theme_override_constants/margin_bottom = 108
 
 [node name="Column" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 14
+
+[node name="TopSpacer" type="Control" parent="Margin/Column"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Title" type="Label" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"Title"
 text = "Enough"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"Subtitle"
+text = "there is never enough of you to go around"
 horizontal_alignment = 1
 
 [node name="TitleSpacer" type="Control" parent="Margin/Column"]
@@ -49,21 +61,25 @@ size_flags_vertical = 3
 [node name="ContinueButton" type="Button" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"MenuAction"
 text = "Continue"
 
 [node name="NewButton" type="Button" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"MenuAction"
 text = "New"
 
 [node name="SettingsButton" type="Button" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"MenuAction"
 text = "Settings"
 
 [node name="QuitButton" type="Button" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"MenuAction"
 text = "Quit"
 
 [node name="OverlayLayer" type="CanvasLayer" parent="."]

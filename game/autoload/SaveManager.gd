@@ -63,6 +63,11 @@ const BASE_FONT_SIZE := 16
 ## Live, in-memory settings (always a full dictionary: defaults + any persisted).
 var _settings: Dictionary = {}
 
+## Captured-once authored font sizes of the project theme (text_scale 1.0
+## baseline), so scaling never compounds. Filled lazily on first text-scale apply.
+var _theme_size_baseline: Array[Dictionary] = []
+var _theme_default_size_baseline: int = BASE_FONT_SIZE
+
 # ---------------------------------------------------------------------------
 # Lifecycle
 # ---------------------------------------------------------------------------
@@ -200,14 +205,50 @@ func _apply_haptics(enabled: bool) -> void:
 		haptics.set("enabled", enabled)
 
 
-## Apply text scaling globally by multiplying the fallback theme font size. This
-## is intentionally low-key so it does not fight PR-09's upcoming Theme: PR-09
-## should size its base font from BASE_FONT_SIZE and multiply by text_scale too,
-## or simply leave fallback sizing to us. Robust against ThemeDB absence.
+## Apply text scaling globally. Two channels, kept in lockstep:
+##   1. ThemeDB.fallback_font_size — covers any Control that inherits sizing.
+##   2. The project default Theme (ui/theme.tres, PR-09) — its explicit font
+##      sizes are authored at text_scale 1.0, so we scale them from their stored
+##      baseline each time. Both multiply BASE_FONT_SIZE-relative values, so the
+##      accessibility knob moves titles, prompts, HUD and body together.
+## Robust against ThemeDB / theme absence (bare tests skip the theme channel).
 func _apply_text_scale(scale: float) -> void:
-	var size := int(round(BASE_FONT_SIZE * maxf(scale, 0.5)))
+	var clamped := maxf(scale, 0.5)
+	var size := int(round(BASE_FONT_SIZE * clamped))
 	if ThemeDB != null and ThemeDB.fallback_font != null:
 		ThemeDB.fallback_font_size = size
+	_scale_project_theme(clamped)
+
+
+## Scale every font size in the project default Theme from its authored (1.0)
+## baseline. The baseline is captured once on first call so repeated changes
+## never compound. No-op when there is no project theme (e.g. bare tests).
+func _scale_project_theme(scale: float) -> void:
+	var theme := ThemeDB.get_project_theme() if ThemeDB != null else null
+	if theme == null:
+		return
+	if _theme_size_baseline.is_empty():
+		_capture_theme_baseline(theme)
+	for entry in _theme_size_baseline:
+		var node_type: String = entry["type"]
+		var name: String = entry["name"]
+		var base_size: int = entry["size"]
+		theme.set_font_size(name, node_type, int(round(base_size * scale)))
+	if theme.default_font_size > 0:
+		theme.default_font_size = int(round(_theme_default_size_baseline * scale))
+
+
+## Snapshot the theme's authored font sizes once so scaling is always relative
+## to the 1.0 baseline rather than the last-applied value.
+func _capture_theme_baseline(theme: Theme) -> void:
+	_theme_default_size_baseline = theme.default_font_size if theme.default_font_size > 0 else BASE_FONT_SIZE
+	for node_type in theme.get_font_size_type_list():
+		for name in theme.get_font_size_list(node_type):
+			_theme_size_baseline.append({
+				"type": node_type,
+				"name": name,
+				"size": theme.get_font_size(name, node_type),
+			})
 
 
 # ---------------------------------------------------------------------------

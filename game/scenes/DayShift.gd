@@ -61,8 +61,11 @@ const DAY_FRAME_BY_FATIGUE := [
 	"%s. Again.",
 ]
 
+const PALETTE := preload("res://ui/palette.gd")
+
 @onready var _day_label: Label = %DayLabel
 @onready var _card_container: Control = %CardContainer
+@onready var _ambient: ColorRect = %Ambient
 @onready var _hud_layer: CanvasLayer = $HUDLayer
 @onready var _pause_button: Button = %PauseButton
 
@@ -109,6 +112,7 @@ func _ready() -> void:
 	add_child(_fatigue_fx)
 
 	GameState.run_ended.connect(_on_run_ended)
+	GameState.day_changed.connect(_on_day_changed)
 
 	_setup_pause()
 
@@ -172,7 +176,25 @@ func start_shift() -> void:
 		_queued_ids[String(card.get("id", ""))] = true
 
 	_update_day_label()
+	_apply_ambient(GameState.day)
 	_present_next()
+
+
+## Apply the per-day colour script: a faint full-screen ambient wash that drifts
+## cooler/dimmer toward day 7. It sits UNDER the FatigueFX shader so the two layer
+## rather than fight — this only sets the mood; FatigueFX drains the colour.
+func _on_day_changed(day: int) -> void:
+	_apply_ambient(day)
+
+
+func _apply_ambient(day: int) -> void:
+	if _ambient == null:
+		return
+	# The palette returns a near-white tint colour; we lay it as a faint, low-alpha
+	# wash so the temperature shift reads without washing the screen out. Day 1 is
+	# barely-warm; day 7 a cooler, slightly heavier dusk.
+	var tint := PALETTE.ambient_for_day(day)
+	_ambient.color = Color(tint.r, tint.g, tint.b, 0.10)
 
 
 func _update_day_label() -> void:
@@ -205,9 +227,12 @@ func _present_next() -> void:
 
 	var card_node: Node = CARD_SCENE.instantiate()
 	_card_container.add_child(card_node)
-	# CardContainer is a plain Control, so size the card to fill it ourselves.
+	# CardContainer is a VBoxContainer (alignment centre): the card fills the
+	# column width and centres vertically, sizing to its own content so the
+	# prompt and responses always read together without overflow.
 	if card_node is Control:
-		(card_node as Control).set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		(card_node as Control).size_flags_horizontal = Control.SIZE_FILL
+		(card_node as Control).size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_current_card = card_node
 
 	# Slow card animation when tired: lower anim_speed stretches durations.

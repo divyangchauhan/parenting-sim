@@ -56,6 +56,17 @@ func setup(ending: Dictionary) -> void:
 ## The whole paced reveal: hold, title, hold, lines (one by one), then the way
 ## forward. Lots of space by design.
 func _reveal(lines: Array) -> void:
+	# Accessibility: reduce_motion shows the whole screen at once (no slow fades).
+	if _reduce_motion():
+		_title.modulate.a = 1.0
+		for line in lines:
+			var label := _add_line_label(String(line))
+			label.modulate.a = 1.0
+		_ready_to_dismiss = true
+		_return.disabled = false
+		_return.modulate.a = 1.0
+		return
+
 	await _wait(OPENING_HOLD)
 	await _fade_in(_title, TITLE_FADE_TIME)
 	await _wait(TITLE_TO_LINES_PAUSE)
@@ -97,6 +108,14 @@ func _wait(seconds: float) -> void:
 # ---------------------------------------------------------------------------
 # Dismissing
 # ---------------------------------------------------------------------------
+
+## Accessibility accessor: honor reduce_motion via SaveManager, defensively.
+func _reduce_motion() -> bool:
+	var sm: Object = get_node_or_null("/root/SaveManager")
+	if sm != null:
+		return bool(sm.get_setting("reduce_motion", false))
+	return false
+
 
 func _on_return_pressed() -> void:
 	dismiss()

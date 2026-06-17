@@ -11,6 +11,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ending")
 
+[node name="Ground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.086, 0.082, 0.094, 1)
+
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -28,9 +37,14 @@ layout_mode = 2
 theme_override_constants/separation = 32
 alignment = 1
 
+[node name="TopSpacer" type="Control" parent="Margin/Column"]
+layout_mode = 2
+size_flags_vertical = 3
+
 [node name="Title" type="Label" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"EndingTitle"
 text = ""
 horizontal_alignment = 1
 autowrap_mode = 2
@@ -50,4 +64,5 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
+theme_type_variation = &"DeferButton"
 text = "·"
