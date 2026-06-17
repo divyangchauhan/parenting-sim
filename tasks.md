@@ -18,9 +18,9 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 06 | Interstitial narrative beats | ✅ | 03 | Done (with PR-07). Type-on reveal, state-selected, unified day flow. Merged. |
 | 07 | Endings | ✅ | 03 | Done with PR-06. Ending screen (no score, tonal), select_ending routing, autoplay traverses to ending. Merged. |
 | 08 | Shell: MainMenu, Settings, Pause, SaveManager | ✅ | 01 | Done. Menu/continue/new, settings (volume/haptics/text-size/reduce-motion), pause, autosave at day boundary. Save tests pass. Merged. |
-| 09 | Art direction: Theme, palette, fonts, typography | 🔨 | 04 | global theme.tres, design tokens, color script |
-| 10 | Audio + Haptics | 📋 | 04 | AudioManager buses, ambient/motif, fatigue low-pass, vibration |
-| 11 | Android export preset + build pipeline | 👀 | 03 | export_presets.cfg (AAB + debug APK), com.divyangchauhan.enough, min API 24 / target 34, arm64+armv7, VIBRATE only; adaptive icons rendered from SVG; android.yml CI (tags/manual); docs/BUILD_ANDROID.md. Preset parses + export reaches template/SDK gate. |
+| 09 | Art direction: Theme, palette, fonts, typography | ✅ | 04 | Done. Lora+Inter (OFL), warm paper theme, per-day color script, layout fixes; verified by screenshot (fresh + L3 burnout look). Merged. |
+| 10 | Audio + Haptics | 🔨 | 04 | AudioManager buses, ambient/motif, fatigue low-pass, vibration |
+| 11 | Android export preset + build pipeline | ✅ | 03 | Done. export_presets.cfg (AAB + debug APK), com.divyangchauhan.enough, min API 24 / target 34, arm64+armv7, VIBRATE only; adaptive icons from SVG; android.yml CI; docs/BUILD_ANDROID.md. Preset recognized (template/SDK gate only). Merged. |
 | 12 | Content: full week (~40–60 cards) + interstitials + endings | ✅ | 02,06,07 | Done. 46 cards (child 22/partner 9/self 8/work 7), 9 interstitials, 7 endings, 5 followup chains. Stress play reaches L3. Merged. |
 | 13 | Polish / playtest / balancing pass | 📋 | all | tuning, juice, emotional read |
 
