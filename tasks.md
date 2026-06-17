@@ -15,9 +15,9 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 03 | DayShift loop + MetersHUD | ✅ | 01,02 | Done (with PR-04). Queue/clock/day lifecycle/followup/defer. AUTOPLAY harness plays 7 days e2e. Merged. |
 | 04 | Card scene + response/choice system | ✅ | 03 | Done with PR-03 on one branch. Card renders + gates responses, emits chosen/deferred. Merged. |
 | 05 | Fatigue/burnout system | ✅ | 04 | Done. FatigueFX (desaturation+dim+vignette shader, anim slowdown, terser microcopy), HUD kept readable on a higher CanvasLayer, stress-autoplay reaches L2, unit + e2e tested. |
-| 06 | Interstitial narrative beats | 📋 | 03 | state-selected quiet beats between days |
-| 07 | Endings | 📋 | 03 | compute from accumulated states, ending screens |
-| 08 | Shell: MainMenu, Settings, Pause, SaveManager | 📋 | 01 | new/continue, settings, autosave |
+| 06 | Interstitial narrative beats | ✅ | 03 | Done (with PR-07). Type-on reveal, state-selected, unified day flow. Merged. |
+| 07 | Endings | ✅ | 03 | Done with PR-06. Ending screen (no score, tonal), select_ending routing, autoplay traverses to ending. Merged. |
+| 08 | Shell: MainMenu, Settings, Pause, SaveManager | 🔨 | 01 | new/continue, settings, autosave |
 | 09 | Art direction: Theme, palette, fonts, typography | 📋 | 04 | global theme.tres, design tokens, color script |
 | 10 | Audio + Haptics | 📋 | 04 | AudioManager buses, ambient/motif, fatigue low-pass, vibration |
 | 11 | Android export preset + build pipeline | 📋 | 03 | portrait AAB, min API 24, icons, headless CI |
