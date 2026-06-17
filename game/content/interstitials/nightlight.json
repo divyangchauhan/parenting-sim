@@ -1,0 +1,13 @@
+{
+  "id": "nightlight",
+  "after_day_min": 3,
+  "select_when": {
+    "state_max": { "security": -3 }
+  },
+  "lines": [
+    "You crack their door an inch. The nightlight throws stars on the ceiling.",
+    "They're asleep, but their fists are closed.",
+    "You leave the door wider than usual."
+  ],
+  "art": "nightlight_stars"
+}

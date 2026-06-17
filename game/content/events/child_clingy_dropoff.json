@@ -1,0 +1,32 @@
+{
+  "id": "child_clingy_dropoff",
+  "source": "child",
+  "day_min": 2,
+  "day_max": 7,
+  "priority": 7,
+  "prompt": "At the door they go quiet and grip your sleeve. \"Don't go yet.\"",
+  "conditions": {
+    "flags_any": ["dragged_out_crying"]
+  },
+  "responses": [
+    {
+      "text": "Crouch. \"I always come back. Every time.\" Wait for the nod.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 1, "patience": 0 },
+      "gated_by": { "energy_min": 1 },
+      "effects": { "security": 2, "connection": 1, "standing": -1 }
+    },
+    {
+      "text": "Quick hug, hand them to the teacher, walk fast.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "security": -1 }
+    },
+    {
+      "text": "Peel the fingers off. \"You're fine. Go.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -1 }
+    }
+  ]
+}

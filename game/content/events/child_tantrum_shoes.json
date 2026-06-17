@@ -1,0 +1,33 @@
+{
+  "id": "child_tantrum_shoes",
+  "source": "child",
+  "day_min": 2,
+  "day_max": 6,
+  "priority": 6,
+  "prompt": "Wrong socks. Now the floor. Now the full-body no, over socks.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Sit on the floor with them. Wait it out.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 2 },
+      "gated_by": { "patience_min": 3 },
+      "effects": { "security": 2, "connection": 1, "standing": -1 }
+    },
+    {
+      "text": "\"Okay. Different socks. But then we go.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "security": 1 }
+    },
+    {
+      "text": "Carry them out mid-scream. You're done negotiating.",
+      "tone": "curt",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "effects": { "security": -2, "wellbeing": -1 },
+      "sets_flags": ["dragged_out_crying"],
+      "followup": "child_clingy_dropoff"
+    }
+  ]
+}

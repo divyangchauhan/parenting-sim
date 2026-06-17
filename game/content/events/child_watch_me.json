@@ -4,11 +4,11 @@
   "day_min": 1,
   "day_max": 7,
   "priority": 5,
-  "prompt": "\"Watch me! Watch me do it! Are you watching?\"",
+  "prompt": "\"Watch me! Watch me do it! Are you watching? You're not watching.\"",
   "conditions": {},
   "responses": [
     {
-      "text": "Put the phone face-down. Watch. Clap.",
+      "text": "Put the phone face-down. Watch. Clap like it's the first time.",
       "tone": "warm",
       "cost": { "time": 1, "energy": 1, "patience": 0 },
       "gated_by": { "energy_min": 1 },
@@ -19,6 +19,13 @@
       "tone": "neutral",
       "cost": { "time": 0, "energy": 0, "patience": 0 },
       "effects": { "connection": -1, "standing": 1 }
+    },
+    {
+      "text": "\"In a minute. I've seen it a hundred times.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "connection": -2 },
+      "sets_flags": ["stopped_watching"]
     }
   ]
 }

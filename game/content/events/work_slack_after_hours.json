@@ -1,0 +1,30 @@
+{
+  "id": "work_slack_after_hours",
+  "source": "work",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "The work chat lights up during bath time. \"You around? Sorry, I know it's late.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Type \"with my kid, back online at 8.\" Put the phone away.",
+      "tone": "warm",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": 1, "standing": -1, "wellbeing": 1 }
+    },
+    {
+      "text": "Answer one-handed while you rinse the shampoo out.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "effects": { "standing": 1, "connection": -1 }
+    },
+    {
+      "text": "Get out, leave them splashing, deal with it. \"Sorry, baby, one sec.\"",
+      "tone": "curt",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "standing": 1, "connection": -2, "security": -1 },
+      "sets_flags": ["left_them_in_bath"]
+    }
+  ]
+}

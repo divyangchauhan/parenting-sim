@@ -1,0 +1,30 @@
+{
+  "id": "child_dont_want_school",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 4,
+  "priority": 7,
+  "prompt": "\"I don't want to go. My tummy hurts.\" The bus comes in nine minutes.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Kneel down. \"Tell me about the tummy.\"",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "security": 2, "connection": 1, "standing": -1 }
+    },
+    {
+      "text": "\"You always feel better once you're there.\" Coat on.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "security": -1 }
+    },
+    {
+      "text": "\"We don't have time for this today. Shoes.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -1 }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "closed_door",
+  "after_day_min": 3,
+  "select_when": {
+    "state_max": { "connection": -3 }
+  },
+  "lines": [
+    "Their door is shut. You're not sure when that started.",
+    "You almost knock. You don't want to wake them, you tell yourself."
+  ],
+  "art": "child_door_closed"
+}

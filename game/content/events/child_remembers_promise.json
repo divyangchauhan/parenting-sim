@@ -1,0 +1,33 @@
+{
+  "id": "child_remembers_promise",
+  "source": "child",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 6,
+  "prompt": "Quiet, at breakfast: \"Is it the park day yet? You said tomorrow. It's tomorrow.\"",
+  "conditions": {
+    "flags_any": ["promised_again"]
+  },
+  "responses": [
+    {
+      "text": "\"Yes. Today. Whatever else happens, the park happens.\"",
+      "tone": "warm",
+      "cost": { "time": 3, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "connection": 3, "security": 2, "standing": -2 }
+    },
+    {
+      "text": "\"Soon. Things are just really busy right now.\"",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1, "security": -1 }
+    },
+    {
+      "text": "\"Stop asking me about the park.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "connection": -2, "security": -2 },
+      "sets_flags": ["stopped_asking"]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "sleeping_on_you",
+  "after_day_min": 2,
+  "select_when": {
+    "state_min": { "connection": 5 }
+  },
+  "lines": [
+    "They fell asleep on your chest mid-sentence.",
+    "Your arm is dead. Your phone is across the room.",
+    "You stay exactly where you are."
+  ],
+  "art": "child_asleep_chest"
+}

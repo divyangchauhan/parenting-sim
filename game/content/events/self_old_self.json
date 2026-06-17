@@ -1,0 +1,23 @@
+{
+  "id": "self_old_self",
+  "source": "self",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 1,
+  "prompt": "A photo surfaces in your feed. You, before. At a show, mid-laugh. You barely recognize them.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Sit with it a second. Text the friend who was there.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1 }
+    },
+    {
+      "text": "Keep scrolling. That person had nothing but time.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": -1 }
+    }
+  ]
+}

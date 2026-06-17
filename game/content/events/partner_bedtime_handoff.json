@@ -25,7 +25,8 @@
       "tone": "curt",
       "cost": { "time": 0, "energy": 0, "patience": 1 },
       "effects": { "partnership": -2 },
-      "sets_flags": ["bedtime_unhandled"]
+      "sets_flags": ["bedtime_unhandled"],
+      "followup": "partner_bedtime_fallout"
     }
   ]
 }

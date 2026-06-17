@@ -1,0 +1,30 @@
+{
+  "id": "child_big_feelings",
+  "source": "child",
+  "day_min": 5,
+  "day_max": 7,
+  "priority": 7,
+  "prompt": "Bedtime, out of nowhere: \"I don't like myself today.\" Four years old. Said flat.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Lie down next to them. \"Tell me about today. All of it.\"",
+      "tone": "warm",
+      "cost": { "time": 3, "energy": 2, "patience": 1 },
+      "gated_by": { "energy_min": 2, "patience_min": 2 },
+      "effects": { "connection": 3, "security": 3, "wellbeing": -1 }
+    },
+    {
+      "text": "\"Hey. Everybody has days like that. I love you.\" Kiss the head.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "connection": 1, "security": 1 }
+    },
+    {
+      "text": "\"You're tired. It feels bigger when you're tired. Sleep.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "security": -1, "connection": -1 }
+    }
+  ]
+}

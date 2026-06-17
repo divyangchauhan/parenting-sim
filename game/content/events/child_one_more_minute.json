@@ -1,0 +1,31 @@
+{
+  "id": "child_one_more_minute",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "The show ends. \"One more. You said one more an hour ago but THIS one more.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "\"Last one, and I'm watching it with you.\" Sit down.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "gated_by": { "patience_min": 1 },
+      "effects": { "connection": 1 }
+    },
+    {
+      "text": "\"Nope. We had a deal.\" Turn it off, ride the whine.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 1 },
+      "effects": { "security": 1 }
+    },
+    {
+      "text": "Leave it running. It buys you twenty minutes.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1, "wellbeing": 1 },
+      "sets_flags": ["more_screen_time"]
+    }
+  ]
+}

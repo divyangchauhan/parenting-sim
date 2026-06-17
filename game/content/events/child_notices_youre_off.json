@@ -1,0 +1,32 @@
+{
+  "id": "child_notices_youre_off",
+  "source": "child",
+  "day_min": 4,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "They study your face a second too long. \"Are you sad? Did I be bad?\"",
+  "conditions": {
+    "state_max": { "wellbeing": -3 }
+  },
+  "responses": [
+    {
+      "text": "\"No, love. Not you. I'm just tired. You didn't do anything.\"",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "security": 2, "connection": 1 }
+    },
+    {
+      "text": "Force the smile. \"I'm great. Go play.\"",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": -1 }
+    },
+    {
+      "text": "\"I'm fine. Stop asking.\" It comes out wrong.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -1 },
+      "sets_flags": ["snapped_over_nothing"]
+    }
+  ]
+}

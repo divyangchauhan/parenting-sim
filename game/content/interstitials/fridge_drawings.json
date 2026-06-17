@@ -1,0 +1,13 @@
+{
+  "id": "fridge_drawings",
+  "after_day_min": 4,
+  "select_when": {
+    "state_min": { "connection": 3, "partnership": 2 }
+  },
+  "lines": [
+    "The fridge is covered in their drawings. One of them is the three of you.",
+    "Everyone is smiling. Everyone has the same green hair.",
+    "It's been a hard week. You leave it up anyway."
+  ],
+  "art": "fridge_art"
+}

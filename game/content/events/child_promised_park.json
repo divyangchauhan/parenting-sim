@@ -1,0 +1,32 @@
+{
+  "id": "child_promised_park",
+  "source": "child",
+  "day_min": 3,
+  "day_max": 5,
+  "priority": 5,
+  "prompt": "\"You said the park today. You PROMISED. You said.\" They did. You forgot.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Drop it all. Twenty minutes on the swings before dark.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "connection": 2, "security": 1, "standing": -1 }
+    },
+    {
+      "text": "\"Not today. Tomorrow, I promise for real.\" Mean to.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "connection": -1 },
+      "sets_flags": ["promised_again"],
+      "followup": "child_remembers_promise"
+    },
+    {
+      "text": "\"I never said that. Don't make things up.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -1 }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "child_bath_resist",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 5,
+  "prompt": "\"I'm not dirty. I don't NEED a bath.\" There is mud in places mud shouldn't be.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Make it a game. Boats, bubbles, the whole thing.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "connection": 2, "wellbeing": -1 }
+    },
+    {
+      "text": "\"In. Five minutes. I'm timing it.\"",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 1 },
+      "effects": {}
+    },
+    {
+      "text": "Skip it. Wipe the worst of it. Nobody will know.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 1, "standing": -1 }
+    }
+  ]
+}

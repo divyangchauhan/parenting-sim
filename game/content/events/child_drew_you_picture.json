@@ -1,0 +1,25 @@
+{
+  "id": "child_drew_you_picture",
+  "source": "child",
+  "day_min": 3,
+  "day_max": 7,
+  "priority": 4,
+  "prompt": "They push a folded paper across the table. \"It's us. You're the big one.\"",
+  "conditions": {
+    "state_min": { "connection": 4 }
+  },
+  "responses": [
+    {
+      "text": "Ask about every scribble. Put it on the fridge together.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "connection": 2, "wellbeing": 1 }
+    },
+    {
+      "text": "\"I love it. Thank you.\" Mean it. Keep moving.",
+      "tone": "neutral",
+      "cost": { "time": 0, "energy": 0, "patience": 0 },
+      "effects": { "connection": 1, "wellbeing": 1 }
+    }
+  ]
+}
