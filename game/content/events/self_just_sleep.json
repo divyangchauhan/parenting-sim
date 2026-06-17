@@ -1,0 +1,23 @@
+{
+  "id": "self_just_sleep",
+  "source": "self",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 1,
+  "prompt": "The house is quiet. You could go to bed, or you could keep scrolling.",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Phone on the dresser. Lie down.",
+      "tone": "warm",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "wellbeing": 2 }
+    },
+    {
+      "text": "Half an hour of nothing. Then bed.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "effects": { "wellbeing": -1 }
+    }
+  ]
+}

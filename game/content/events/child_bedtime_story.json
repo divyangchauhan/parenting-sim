@@ -1,0 +1,34 @@
+{
+  "id": "child_bedtime_story",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 8,
+  "prompt": "\"One more story. The long one. Pleeease.\"",
+  "conditions": {
+    "flags_none": ["skipped_bedtime"]
+  },
+  "responses": [
+    {
+      "text": "Read it. Do all the voices.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "connection": 2, "wellbeing": -1 },
+      "sets_flags": ["read_the_long_one"]
+    },
+    {
+      "text": "One short one, then lights out.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "effects": { "connection": 1 }
+    },
+    {
+      "text": "\"Not tonight. Sleep.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "connection": -1, "security": -1 },
+      "sets_flags": ["skipped_bedtime"]
+    }
+  ]
+}

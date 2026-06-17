@@ -1,0 +1,32 @@
+{
+  "id": "child_woke_crying",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 9,
+  "prompt": "It's later. The crying woke you. \"You said there was nothing.\"",
+  "conditions": {
+    "flags_any": ["dismissed_fear"]
+  },
+  "responses": [
+    {
+      "text": "Carry them back. Stay this time.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 2, "patience": 0 },
+      "gated_by": { "energy_min": 2 },
+      "effects": { "security": 2, "connection": 1, "wellbeing": -2 }
+    },
+    {
+      "text": "Let them sleep in your bed.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 1, "patience": 0 },
+      "effects": { "security": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "Shut the door. You need the hours.",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2, "connection": -1 }
+    }
+  ]
+}

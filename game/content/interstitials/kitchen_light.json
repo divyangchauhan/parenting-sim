@@ -1,0 +1,14 @@
+{
+  "id": "kitchen_light",
+  "after_day_min": 1,
+  "select_when": {
+    "state_min": {},
+    "state_max": {}
+  },
+  "lines": [
+    "One light still on over the sink.",
+    "A small bowl in the drying rack, a spoon beside it.",
+    "Tomorrow will ask the same things. For now, the kettle ticks as it cools."
+  ],
+  "art": "kitchen_night"
+}

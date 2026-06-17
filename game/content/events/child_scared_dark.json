@@ -1,0 +1,32 @@
+{
+  "id": "child_scared_dark",
+  "source": "child",
+  "day_min": 1,
+  "day_max": 7,
+  "priority": 7,
+  "prompt": "\"There's something in the closet. I heard it.\"",
+  "conditions": {},
+  "responses": [
+    {
+      "text": "Sit on the floor until the breathing slows.",
+      "tone": "warm",
+      "cost": { "time": 2, "energy": 1, "patience": 1 },
+      "gated_by": { "patience_min": 2 },
+      "effects": { "security": 2, "connection": 1, "wellbeing": -1 }
+    },
+    {
+      "text": "Check the closet. Leave the hall light on.",
+      "tone": "neutral",
+      "cost": { "time": 1, "energy": 0, "patience": 0 },
+      "effects": { "security": 1 }
+    },
+    {
+      "text": "\"There's nothing there. Go to sleep.\"",
+      "tone": "curt",
+      "cost": { "time": 0, "energy": 0, "patience": 1 },
+      "effects": { "security": -2 },
+      "sets_flags": ["dismissed_fear"],
+      "followup": "child_woke_crying"
+    }
+  ]
+}
