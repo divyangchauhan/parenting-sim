@@ -18,6 +18,16 @@ signal day_finished(day: int)
 ## autoplayer connects to this to drive choices; normal play ignores it.
 signal card_presented(card_node)
 
+## Emitted when a between-day Interstitial overlay is presented, with the live
+## Interstitial node. A driver (the autoplayer) connects to auto-advance it; the
+## flow itself awaits the node's finished() either way.
+signal interstitial_shown(interstitial_node)
+
+## Emitted when the final Ending screen is presented, with the live Ending node.
+## A driver connects to assert completion / auto-dismiss; normal play just shows
+## it and waits for the player.
+signal ending_shown(ending_node)
+
 ## How many slots ahead of the front a follow-up consequence is inserted.
 const FOLLOWUP_INSERT_OFFSET := 2
 
@@ -26,7 +36,14 @@ const FOLLOWUP_INSERT_OFFSET := 2
 const MAX_DEFERS_PER_CARD := 2
 
 const CARD_SCENE := preload("res://scenes/Card.tscn")
+const INTERSTITIAL_SCENE := preload("res://scenes/Interstitial.tscn")
+const ENDING_SCENE := preload("res://scenes/Ending.tscn")
 const FATIGUE_FX_SCRIPT := preload("res://scenes/FatigueFX.gd")
+
+## CanvasLayer the narrative overlays (Interstitial / Ending) draw on. Above the
+## fatigue FX (layer 1) but below the HUD (layer 2) — though the HUD is hidden
+## during these beats anyway via _set_chrome_visible().
+const OVERLAY_CANVAS_LAYER := 3
 
 ## Day-1 = Monday weekday labels for the day-open frame line.
 const WEEKDAYS := ["Monday", "Tuesday", "Wednesday", "Thursday",
@@ -44,9 +61,17 @@ const DAY_FRAME_BY_FATIGUE := [
 
 @onready var _day_label: Label = %DayLabel
 @onready var _card_container: Control = %CardContainer
+@onready var _hud_layer: CanvasLayer = $HUDLayer
 
 ## The hosted post-effect node; also the source of the shared anim_speed factor.
 var _fatigue_fx: Node = null
+
+## Holds the narrative overlays (Interstitial / Ending), lazily created.
+var _overlay_layer: CanvasLayer = null
+
+## Set true once GameState.run_ended() fires. end_day() emits it synchronously,
+## so the flow can read this flag immediately after calling end_day().
+var _run_ended := false
 
 ## Live queue of card Dictionaries for the current day (front = next up).
 var _queue: Array = []
@@ -99,6 +124,7 @@ func start_shift() -> void:
 	_queued_ids.clear()
 	_defer_counts.clear()
 	_day_over = false
+	_run_ended = false
 
 	for card in _queue:
 		_queued_ids[String(card.get("id", ""))] = true
@@ -234,12 +260,18 @@ func _dismiss_current() -> void:
 # Day / run boundaries
 # ---------------------------------------------------------------------------
 
+## End the day, then run the between-day flow: announce the day, close it out in
+## GameState, and either chain into the next day (via an optional interstitial)
+## or, once the run is over, present the ending. This is the unified director
+## that drives BOTH real play and headless autoplay through the same path.
 func _finish_day() -> void:
 	if _day_over:
 		return
 	_day_over = true
 
 	var finished_day := GameState.day
+	# end_day() advances the day index and, when past the final day, emits
+	# run_ended() synchronously (caught by _on_run_ended, setting _run_ended).
 	GameState.end_day()
 
 	print("Day %d done. Energy %d/%d, Patience %d/%d." % [
@@ -248,10 +280,84 @@ func _finish_day() -> void:
 
 	day_finished.emit(finished_day)
 
-	# TODO(PR-06/07): route here to the Interstitial for this day, then the next
-	# DayShift, and to the Ending screen once run_ended() fires. For now we just
-	# stop after emitting day_finished (the autoplay harness chains days itself).
+	await _run_post_day_flow(finished_day)
+
+
+## The post-day transition. If the run has ended, present the ending and stop.
+## Otherwise show the interstitial for the day just finished (if any), then open
+## the next day's shift. Driven the same way in real play and autoplay.
+func _run_post_day_flow(finished_day: int) -> void:
+	if _run_ended:
+		await _present_ending()
+		return
+
+	var interstitial := EventDeck.select_interstitial(finished_day)
+	if not interstitial.is_empty():
+		await _present_interstitial(interstitial)
+
+	start_shift()
+
+
+## Show the between-day Interstitial overlay and wait for the player (or the
+## autoplayer) to advance it. The card chrome is hidden for the beat and
+## restored after.
+func _present_interstitial(interstitial: Dictionary) -> void:
+	_set_chrome_visible(false)
+
+	var node: Node = INTERSTITIAL_SCENE.instantiate()
+	_overlay().add_child(node)
+	node.setup(interstitial)
+
+	interstitial_shown.emit(node)
+
+	await node.finished
+	node.queue_free()
+
+	_set_chrome_visible(true)
+
+
+## Present the Ending screen (the run is over) and wait for it to be dismissed.
+## On dismissal we currently restart a fresh run; real MainMenu routing is PR-08.
+func _present_ending() -> void:
+	_set_chrome_visible(false)
+
+	var ending := EventDeck.select_ending()
+	var node: Node = ENDING_SCENE.instantiate()
+	_overlay().add_child(node)
+	node.setup(ending)
+
+	ending_shown.emit(node)
+
+	await node.dismissed
+	node.queue_free()
+
+	# TODO(PR-08): route to the real MainMenu here. For now, start a fresh run so
+	# the screen has a graceful way forward instead of a dead end.
+	_set_chrome_visible(true)
+	GameState.new_run()
+	start_shift()
+
+
+## Lazily create (and return) the CanvasLayer the narrative overlays live on.
+func _overlay() -> CanvasLayer:
+	if _overlay_layer == null:
+		_overlay_layer = CanvasLayer.new()
+		_overlay_layer.name = "OverlayLayer"
+		_overlay_layer.layer = OVERLAY_CANVAS_LAYER
+		add_child(_overlay_layer)
+	return _overlay_layer
+
+
+## Show/hide the day chrome (the card column + HUD) so a narrative beat owns the
+## screen cleanly. The fatigue FX is intentionally left running underneath.
+func _set_chrome_visible(visible_now: bool) -> void:
+	if _hud_layer != null:
+		_hud_layer.visible = visible_now
+	var margin := get_node_or_null("Margin")
+	if margin is CanvasItem:
+		(margin as CanvasItem).visible = visible_now
 
 
 func _on_run_ended() -> void:
+	_run_ended = true
 	print("run ended")

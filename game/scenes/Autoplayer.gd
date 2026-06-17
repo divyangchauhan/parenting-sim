@@ -2,10 +2,13 @@ extends Node
 ## Autoplayer — headless end-to-end harness driver (test scaffolding only).
 ##
 ## Gated behind the AUTOPLAY=1 env var and never added on the normal play path.
-## It drives the REAL DayShift + Card + autoloads: on each presented card it
-## picks the first enabled response (cheapest fallback / defer if none), chains
-## across all days, and quits 0 once GameState.run_ended() fires. This is the
-## stand-in for a human while there is no display.
+## It drives the REAL DayShift + Card + autoloads through the SAME unified flow a
+## human would: on each presented card it picks a response (per mode), and on
+## each between-day Interstitial it auto-advances. DayShift owns the day-to-day
+## chaining now — the autoplayer no longer calls start_shift() itself; it just
+## observes DayShift's signals. When the Ending screen appears (ending_shown) it
+## asserts the run completed and quits 0. This is the stand-in for a human while
+## there is no display.
 
 ## Safety cap: total cards answered across the whole run before we bail (guards
 ## against an unexpected non-terminating loop turning into a hung CI job).
@@ -43,6 +46,8 @@ func start_pending(dayshift: Node) -> void:
 	_dayshift = dayshift
 	_dayshift.card_presented.connect(_on_card_presented)
 	_dayshift.day_finished.connect(_on_day_finished)
+	_dayshift.interstitial_shown.connect(_on_interstitial_shown)
+	_dayshift.ending_shown.connect(_on_ending_shown)
 	GameState.fatigue_level_changed.connect(_on_fatigue_level_changed)
 	GameState.run_ended.connect(_on_run_ended)
 	# Seed from the current level in case it never changes during the run.
@@ -123,13 +128,30 @@ func _find_response_buttons(card_node) -> Array:
 	return found
 
 
-func _on_day_finished(day: int) -> void:
+## DayShift owns chaining now: it advances to the interstitial / next day / ending
+## by itself. We only tally completed days for the report line; the actual
+## traversal is driven by reacting to interstitial_shown / ending_shown.
+func _on_day_finished(_day: int) -> void:
 	_days_completed += 1
-	if _run_ended:
-		_finish()
+
+
+## Auto-advance a between-day Interstitial so the headless run keeps moving. We
+## defer the advance so DayShift has finished wiring the overlay before we drive
+## it; advance() emits the node's finished() that DayShift is awaiting.
+func _on_interstitial_shown(interstitial_node) -> void:
+	if is_instance_valid(interstitial_node):
+		interstitial_node.call_deferred("advance")
+
+
+## The run reached its Ending. Assert it actually completed the week, emit the
+## report line for this mode, and quit 0. (Dismiss the ending too, for tidiness,
+## though we exit right after.)
+func _on_ending_shown(ending_node) -> void:
+	if not _run_ended:
+		push_error("AUTOPLAY: ending shown but run_ended never fired.")
+		get_tree().quit(1)
 		return
-	# Chain straight into the next day's shift on the same DayShift node.
-	_dayshift.call_deferred("start_shift")
+	_finish()
 
 
 func _on_run_ended() -> void:
