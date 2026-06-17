@@ -27,6 +27,7 @@ answer, and the mix of exhaustion, guilt, and love underneath.
 - [Game Design](docs/GAME_DESIGN.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Features](docs/FEATURES.md)
+- [Building for Android](docs/BUILD_ANDROID.md)
 - [Task board](tasks.md)
 
 ## Dev
@@ -37,3 +38,12 @@ godot --path game
 # Headless import / CI check
 godot --headless --path game --quit
 ```
+
+## Android build
+The project ships configured for Android (portrait, min API 24, target 34, AAB +
+debug APK presets in `game/export_presets.cfg`). Build it:
+```bash
+godot --headless --path game --export-release "Android" ../build/enough.aab
+```
+Full toolchain setup, signing, on-device testing, and Play Store notes are in
+[docs/BUILD_ANDROID.md](docs/BUILD_ANDROID.md).

@@ -40,3 +40,15 @@ jobs:
           else
             echo "Content validator not present yet (added in PR-02) — skipping."
           fi
+
+      - name: Unit tests
+        run: |
+          for t in test_gamestate test_fatigue test_save; do
+            if [ -f "game/tests/$t.gd" ]; then
+              echo "== $t =="
+              ~/godot/godot --headless --path game --script "tests/$t.gd"
+            fi
+          done
+
+      - name: Autoplay end-to-end
+        run: AUTOPLAY=1 ~/godot/godot --headless --path game
