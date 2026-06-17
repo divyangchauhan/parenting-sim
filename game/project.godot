@@ -1,0 +1,37 @@
+; Engine configuration file.
+; Godot 4.3 — Enough (parenting sim)
+
+config_version=5
+
+[application]
+
+config/name="Enough"
+config/description="A short, mechanically simple game about the texture of parenting."
+run/main_scene="res://scenes/Boot.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://autoload/GameState.gd"
+EventDeck="*res://autoload/EventDeck.gd"
+SaveManager="*res://autoload/SaveManager.gd"
+AudioManager="*res://autoload/AudioManager.gd"
+Haptics="*res://autoload/Haptics.gd"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation="portrait"
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true

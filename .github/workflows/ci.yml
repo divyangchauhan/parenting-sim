@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  godot-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Godot
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: ~/godot
+          key: godot-4.3-stable
+
+      - name: Download Godot 4.3
+        if: steps.cache-godot.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/godot
+          curl -sL -o /tmp/godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -o /tmp/godot.zip -d ~/godot
+          mv ~/godot/Godot_v4.3-stable_linux.x86_64 ~/godot/godot
+          chmod +x ~/godot/godot
+
+      - name: Headless import + boot smoke
+        run: |
+          ~/godot/godot --headless --path game --import || true
+          ~/godot/godot --headless --path game --quit-after 60
+
+      - name: Content validation
+        run: |
+          if [ -f game/tests/validate_content.gd ]; then
+            ~/godot/godot --headless --path game --script tests/validate_content.gd
+          else
+            echo "Content validator not present yet (added in PR-02) — skipping."
+          fi

@@ -1,0 +1,23 @@
+# Godot 4
+game/.godot/
+game/.import/
+game/android/build/
+game/export_presets.cfg.local
+
+# Exports / builds
+build/
+*.apk
+*.aab
+*.ipa
+export.cfg.local
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs / tmp
+*.log
+/tmp/
