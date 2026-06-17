@@ -12,6 +12,26 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dayshift")
 
+[node name="Ground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.086, 0.082, 0.094, 1)
+
+[node name="Ambient" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.06)
+
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -19,24 +39,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 112
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 132
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 36
 
 [node name="Column" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 18
 
 [node name="DayLabel" type="Label" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"DayFrame"
 text = "Day 1. Monday."
 
-[node name="CardContainer" type="Control" parent="Margin/Column"]
+[node name="CardContainer" type="VBoxContainer" parent="Margin/Column"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
 [node name="HUDLayer" type="CanvasLayer" parent="."]
 layer = 2
@@ -50,9 +72,10 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -64.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = 56.0
+offset_top = 100.0
+offset_right = -20.0
+offset_bottom = 140.0
 grow_horizontal = 0
 focus_mode = 0
-text = "II"
+theme_type_variation = &"DeferButton"
+text = "❙❙"

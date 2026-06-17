@@ -36,6 +36,11 @@ func _ready() -> void:
 	var scene: Node = load(scene_path).instantiate()
 	add_child(scene)
 
+	# Interstitial / Ending are pure views fed by setup(); without it they render
+	# empty. For a representative screenshot, feed them sample content here. This
+	# only runs in the harness — the real flow always calls setup() itself.
+	_seed_sample_content(scene_path, scene)
+
 	for i in range(frames):
 		await get_tree().process_frame
 
@@ -46,3 +51,31 @@ func _ready() -> void:
 	else:
 		push_error("Screenshot: save failed (%d)" % err)
 	get_tree().quit(0 if err == OK else 1)
+
+
+## Feed sample content to pure-view scenes so the screenshot isn't blank. For
+## Interstitial we flip on reduce_motion first so its reveal lands instantly;
+## Ending's slow reveal is given extra settle frames by the caller (SHOT_FRAMES).
+func _seed_sample_content(scene_path: String, scene: Node) -> void:
+	if scene_path.ends_with("Interstitial.tscn") and scene.has_method("setup"):
+		SaveManager.set_setting("reduce_motion", true)
+		scene.setup({
+			"id": "sample",
+			"art": "a dark hallway",
+			"lines": [
+				"You stand in the hallway a moment,",
+				"listening to them breathe.",
+				"The dishes can wait.",
+			],
+		})
+	elif scene_path.ends_with("Ending.tscn") and scene.has_method("setup"):
+		SaveManager.set_setting("reduce_motion", true)
+		scene.setup({
+			"id": "sample",
+			"title": "They'll remember the stories.",
+			"lines": [
+				"You didn't get to everything.",
+				"You never do.",
+				"But you were there for the parts that stay.",
+			],
+		})

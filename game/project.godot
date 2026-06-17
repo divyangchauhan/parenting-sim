@@ -19,6 +19,10 @@ SaveManager="*res://autoload/SaveManager.gd"
 AudioManager="*res://autoload/AudioManager.gd"
 Haptics="*res://autoload/Haptics.gd"
 
+[gui]
+
+theme/custom="res://ui/theme.tres"
+
 [display]
 
 window/size/viewport_width=720
