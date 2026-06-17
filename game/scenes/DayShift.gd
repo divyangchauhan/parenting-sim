@@ -26,13 +26,27 @@ const FOLLOWUP_INSERT_OFFSET := 2
 const MAX_DEFERS_PER_CARD := 2
 
 const CARD_SCENE := preload("res://scenes/Card.tscn")
+const FATIGUE_FX_SCRIPT := preload("res://scenes/FatigueFX.gd")
 
 ## Day-1 = Monday weekday labels for the day-open frame line.
 const WEEKDAYS := ["Monday", "Tuesday", "Wednesday", "Thursday",
 	"Friday", "Saturday", "Sunday"]
 
+## Terser day-open frame line per fatigue level (0 fresh .. 3 burnt out). As the
+## player tires the chrome gets shorter and flatter. Kept in code (UI chrome, not
+## authored story); "%s" takes the weekday, "%d" the day index. Index is clamped.
+const DAY_FRAME_BY_FATIGUE := [
+	"Day %d. %s. A fresh start.",
+	"Day %d. %s.",
+	"Day %d. %s. Again.",
+	"%s. Again.",
+]
+
 @onready var _day_label: Label = %DayLabel
 @onready var _card_container: Control = %CardContainer
+
+## The hosted post-effect node; also the source of the shared anim_speed factor.
+var _fatigue_fx: Node = null
 
 ## Live queue of card Dictionaries for the current day (front = next up).
 var _queue: Array = []
@@ -56,8 +70,23 @@ var _day_over := false
 
 
 func _ready() -> void:
+	# Host the fatigue post-effect. Its CanvasLayer (layer 1) sits above the card
+	# UI; the MetersHUD lives on HUDLayer (layer 2) above it, so the HUD stays
+	# full-colour and readable while the card world desaturates and dims.
+	_fatigue_fx = FATIGUE_FX_SCRIPT.new()
+	_fatigue_fx.name = "FatigueFX"
+	add_child(_fatigue_fx)
+
 	GameState.run_ended.connect(_on_run_ended)
 	start_shift()
+
+
+## Current animation-speed multiplier from the fatigue FX (1.0 when fresh, lower
+## when tired). Defensive default of 1.0 if the FX isn't up yet.
+func _anim_speed() -> float:
+	if _fatigue_fx != null:
+		return float(_fatigue_fx.anim_speed)
+	return 1.0
 
 
 ## Open the day and begin presenting its queue. Public so a future menu / the
@@ -80,7 +109,13 @@ func start_shift() -> void:
 
 func _update_day_label() -> void:
 	var weekday: String = WEEKDAYS[(GameState.day - 1) % WEEKDAYS.size()]
-	_day_label.text = "Day %d. %s." % [GameState.day, weekday]
+	var level := clampi(GameState.fatigue_level(), 0, DAY_FRAME_BY_FATIGUE.size() - 1)
+	var frame: String = DAY_FRAME_BY_FATIGUE[level]
+	# Burnt-out variant drops the day number and takes only the weekday.
+	if frame.count("%d") == 0:
+		_day_label.text = frame % weekday
+	else:
+		_day_label.text = frame % [GameState.day, weekday]
 
 
 # ---------------------------------------------------------------------------
@@ -106,6 +141,10 @@ func _present_next() -> void:
 	if card_node is Control:
 		(card_node as Control).set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_current_card = card_node
+
+	# Slow card animation when tired: lower anim_speed stretches durations.
+	if card_node.has_method("set_anim_speed"):
+		card_node.set_anim_speed(_anim_speed())
 
 	card_node.setup(card)
 	card_node.chosen.connect(_on_card_chosen.bind(card))
