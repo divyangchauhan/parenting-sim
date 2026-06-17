@@ -27,6 +27,9 @@ func _ready() -> void:
 		return
 
 	# Normal play: hand off to the MainMenu (Continue / New / Settings / Quit).
+	# Wait a frame first so we never swap scenes while the tree is still busy
+	# building Boot's own subtree (avoids a "parent busy adding/removing" error).
+	await get_tree().process_frame
 	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
