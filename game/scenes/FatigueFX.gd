@@ -134,6 +134,11 @@ func _apply_params(params: Dictionary, animated: bool) -> void:
 	if _tween != null and _tween.is_valid():
 		_tween.kill()
 
+	# Accessibility: when reduce_motion is on, never crossfade — snap to the target
+	# so the screen doesn't slowly shift under the player.
+	if _reduce_motion():
+		animated = false
+
 	if not animated or _material == null:
 		if _material != null:
 			_material.set_shader_parameter("desaturation", target_desat)
@@ -161,3 +166,12 @@ func _set_desaturation(v: float) -> void:
 
 func _set_dim(v: float) -> void:
 	_material.set_shader_parameter("dim", v)
+
+
+## Accessibility accessor: honor the reduce_motion setting via SaveManager,
+## defensively (a bare instance without the autoload reads false / full motion).
+func _reduce_motion() -> bool:
+	var sm: Object = get_node_or_null("/root/SaveManager")
+	if sm != null:
+		return bool(sm.get_setting("reduce_motion", false))
+	return false

@@ -124,6 +124,10 @@ func all_responses_disabled() -> bool:
 ## Subtle slide+fade in. Called by DayShift after the card is added. Duration is
 ## stretched by lower _anim_speed so it visibly slows when the player is tired.
 func play_enter() -> void:
+	# Accessibility: reduce_motion shows the card immediately, no slide/fade.
+	if _reduce_motion():
+		modulate.a = 1.0
+		return
 	var enter_time := ENTER_TIME / _anim_speed
 	modulate.a = 0.0
 	position.y += ENTER_OFFSET
@@ -136,10 +140,22 @@ func play_enter() -> void:
 ## Subtle fade out. Awaited by DayShift before presenting the next card. Duration
 ## is stretched by lower _anim_speed (tireder = slower).
 func play_exit() -> void:
+	# Accessibility: reduce_motion drops the card instantly, no fade.
+	if _reduce_motion():
+		modulate.a = 0.0
+		return
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, EXIT_TIME / _anim_speed) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	await tween.finished
+
+
+## Accessibility accessor: honor reduce_motion via SaveManager, defensively.
+func _reduce_motion() -> bool:
+	var sm: Object = get_node_or_null("/root/SaveManager")
+	if sm != null:
+		return bool(sm.get_setting("reduce_motion", false))
+	return false
 
 
 func _on_defer_pressed() -> void:
