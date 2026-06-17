@@ -17,11 +17,11 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 05 | Fatigue/burnout system | ✅ | 04 | Done. FatigueFX (desaturation+dim+vignette shader, anim slowdown, terser microcopy), HUD kept readable on a higher CanvasLayer, stress-autoplay reaches L2, unit + e2e tested. |
 | 06 | Interstitial narrative beats | ✅ | 03 | Done (with PR-07). Type-on reveal, state-selected, unified day flow. Merged. |
 | 07 | Endings | ✅ | 03 | Done with PR-06. Ending screen (no score, tonal), select_ending routing, autoplay traverses to ending. Merged. |
-| 08 | Shell: MainMenu, Settings, Pause, SaveManager | 🔨 | 01 | new/continue, settings, autosave |
-| 09 | Art direction: Theme, palette, fonts, typography | 📋 | 04 | global theme.tres, design tokens, color script |
+| 08 | Shell: MainMenu, Settings, Pause, SaveManager | ✅ | 01 | Done. Menu/continue/new, settings (volume/haptics/text-size/reduce-motion), pause, autosave at day boundary. Save tests pass. Merged. |
+| 09 | Art direction: Theme, palette, fonts, typography | 🔨 | 04 | global theme.tres, design tokens, color script |
 | 10 | Audio + Haptics | 📋 | 04 | AudioManager buses, ambient/motif, fatigue low-pass, vibration |
 | 11 | Android export preset + build pipeline | 📋 | 03 | portrait AAB, min API 24, icons, headless CI |
-| 12 | Content: full week (~40–60 cards) + interstitials + endings | 📋 | 02,06,07 | writer-led, passes validator |
+| 12 | Content: full week (~40–60 cards) + interstitials + endings | ✅ | 02,06,07 | Done. 46 cards (child 22/partner 9/self 8/work 7), 9 interstitials, 7 endings, 5 followup chains. Stress play reaches L3. Merged. |
 | 13 | Polish / playtest / balancing pass | 📋 | all | tuning, juice, emotional read |
 
 ## Milestones
@@ -34,3 +34,9 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 - 2026-06-17: Project kicked off. Engine decision: **Godot 4** (vs Flutter/web). Platform:
   **Android-first, premium paid, iOS optional later.** Docs (PRD, design, architecture,
   features) written. PR-00 in progress.
+- 2026-06-17: **M1 (vertical slice)** done — PR-00..05. A full day plays through real scenes
+  with the fatigue/burnout feel (stress autoplay verified).
+- 2026-06-17: **M2 (full loop)** done — PR-06/07 (interstitials + endings + unified day flow),
+  PR-08 (shell + save/continue/settings/pause), PR-12 (full week: 46 cards / 9 interstitials /
+  7 endings, 5 followup chains). Full week plays start→ending; stress play reaches fatigue L3.
+  Remaining: PR-09 (art/theme), PR-10 (audio/haptics), PR-11 (Android export), PR-13 (polish).
