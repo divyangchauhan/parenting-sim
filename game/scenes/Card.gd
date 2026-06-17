@@ -22,18 +22,39 @@ signal chosen(response: Dictionary)
 signal deferred()
 
 ## Enter/exit animation tunables (subtle juice; DayShift awaits play_exit()).
+## Effective durations are divided by `_anim_speed`, so a tired (slower) speed
+## stretches them — the card literally moves slower when the player is depleted.
 const ENTER_TIME := 0.18
 const EXIT_TIME := 0.16
 const ENTER_OFFSET := 24.0
+
+## Terser "defer" affordance label per fatigue level (0 fresh .. 3 burnt out).
+## UI chrome only (not authored story); index is clamped to the array.
+const DEFER_TEXT_BY_FATIGUE := ["Not now", "Not now", "Later", "No"]
+
+## Quiet, non-punitive subtext appended to a warm option locked by low reserve —
+## "present, not punitive". Shown only for fatigue-gated (not merely unaffordable)
+## warm/attentive options.
+const UNAVAILABLE_HINT := "  —not right now"
 
 @onready var _source_tag: Label = %SourceTag
 @onready var _prompt: Label = %Prompt
 @onready var _responses_box: VBoxContainer = %Responses
 @onready var _defer_button: Button = %DeferButton
 
+## Animation-speed multiplier handed down from DayShift (1.0 = normal, < 1.0 =
+## slower). Set before setup()/play_enter(); defaults to normal speed.
+var _anim_speed: float = 1.0
+
 
 func _ready() -> void:
 	_defer_button.pressed.connect(_on_defer_pressed)
+
+
+## Set the animation-speed multiplier (from FatigueFX via DayShift). Lower =
+## slower transitions. Called before setup()/play_enter().
+func set_anim_speed(speed: float) -> void:
+	_anim_speed = maxf(speed, 0.01)
 
 
 ## Render `card` (shape per content/schema.md) and build its response buttons.
@@ -44,6 +65,10 @@ func setup(card: Dictionary) -> void:
 	_source_tag.theme_type_variation = &"SourceTag_%s" % source
 
 	_prompt.text = String(card.get("prompt", ""))
+
+	# Terser defer affordance as fatigue rises (display-only chrome).
+	var level := clampi(GameState.fatigue_level(), 0, DEFER_TEXT_BY_FATIGUE.size() - 1)
+	_defer_button.text = DEFER_TEXT_BY_FATIGUE[level]
 
 	for child in _responses_box.get_children():
 		child.queue_free()
@@ -72,6 +97,12 @@ func _build_response_button(response: Dictionary) -> Button:
 	var unaffordable := not GameState.can_afford(response.get("cost", {}))
 	button.disabled = gated or unaffordable
 
+	# When a warm/attentive option is locked specifically by low reserve (fatigue
+	# gating), append a small, quiet reason — present, not punitive. Unaffordable
+	# (out of time/resource) options stay bare; this hint is about "not in you".
+	if gated and tone == "warm":
+		button.text += UNAVAILABLE_HINT
+
 	# Intent only — DayShift resolves it.
 	button.pressed.connect(func() -> void: chosen.emit(response))
 	return button
@@ -90,20 +121,23 @@ func all_responses_disabled() -> bool:
 # Enter / exit animation hooks
 # ---------------------------------------------------------------------------
 
-## Subtle slide+fade in. Called by DayShift after the card is added.
+## Subtle slide+fade in. Called by DayShift after the card is added. Duration is
+## stretched by lower _anim_speed so it visibly slows when the player is tired.
 func play_enter() -> void:
+	var enter_time := ENTER_TIME / _anim_speed
 	modulate.a = 0.0
 	position.y += ENTER_OFFSET
 	var tween := create_tween().set_parallel(true)
-	tween.tween_property(self, "modulate:a", 1.0, ENTER_TIME)
-	tween.tween_property(self, "position:y", position.y - ENTER_OFFSET, ENTER_TIME) \
+	tween.tween_property(self, "modulate:a", 1.0, enter_time)
+	tween.tween_property(self, "position:y", position.y - ENTER_OFFSET, enter_time) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
-## Subtle fade out. Awaited by DayShift before presenting the next card.
+## Subtle fade out. Awaited by DayShift before presenting the next card. Duration
+## is stretched by lower _anim_speed (tireder = slower).
 func play_exit() -> void:
 	var tween := create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, EXIT_TIME) \
+	tween.tween_property(self, "modulate:a", 0.0, EXIT_TIME / _anim_speed) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	await tween.finished
 

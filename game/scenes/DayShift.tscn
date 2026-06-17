@@ -38,5 +38,8 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="MetersHUD" parent="." instance=ExtResource("2_metershud")]
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="MetersHUD" parent="HUDLayer" instance=ExtResource("2_metershud")]
 layout_mode = 1

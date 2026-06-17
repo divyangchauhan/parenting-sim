@@ -12,9 +12,9 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 00 | Repo scaffold + docs + Godot project + .gitignore | ✅ | — | Done. Boots headless exit 0. Pushed to `main`. |
 | 01 | Core data model + GameState autoload | ✅ | 00 | Done + tested headless. Merged. |
 | 02 | Content schema + EventDeck loader + sample events | ✅ | 01 | Done. EventDeck service + validator + 11 cards / 2 interstitials / 4 endings. Merged. |
-| 03 | DayShift loop + MetersHUD | 🔨 | 01,02 | queue, serve cards, time clock, day start/end |
-| 04 | Card scene + response/choice system | 📋 | 03 | render card, response buttons, defer, apply costs+effects |
-| 05 | Fatigue/burnout system | 📋 | 04 | fatigue level, option gating, UI degradation hooks, signal |
+| 03 | DayShift loop + MetersHUD | ✅ | 01,02 | Done (with PR-04). Queue/clock/day lifecycle/followup/defer. AUTOPLAY harness plays 7 days e2e. Merged. |
+| 04 | Card scene + response/choice system | ✅ | 03 | Done with PR-03 on one branch. Card renders + gates responses, emits chosen/deferred. Merged. |
+| 05 | Fatigue/burnout system | ✅ | 04 | Done. FatigueFX (desaturation+dim+vignette shader, anim slowdown, terser microcopy), HUD kept readable on a higher CanvasLayer, stress-autoplay reaches L2, unit + e2e tested. |
 | 06 | Interstitial narrative beats | 📋 | 03 | state-selected quiet beats between days |
 | 07 | Endings | 📋 | 03 | compute from accumulated states, ending screens |
 | 08 | Shell: MainMenu, Settings, Pause, SaveManager | 📋 | 01 | new/continue, settings, autosave |

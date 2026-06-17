@@ -11,10 +11,29 @@ extends Node
 ## against an unexpected non-terminating loop turning into a hung CI job).
 const MAX_TOTAL_ACTIONS := 2000
 
+## Stress mode must drive fatigue at least this deep to count as a real exercise
+## of the burnout path.
+const STRESS_MIN_FATIGUE := 2
+
 var _dayshift: Node = null
 var _days_completed := 0
 var _actions := 0
 var _run_ended := false
+
+## Drive mode, from env AUTOPLAY_MODE: "first" (default) picks the first enabled
+## response (original behaviour); "stress" picks the highest-cost enabled
+## response each card to deplete reserves fast and exercise the fatigue system.
+var _mode := "first"
+
+## Highest fatigue level observed across the run (for the stress-mode assertion
+## and report line).
+var _max_fatigue := 0
+
+
+func _init() -> void:
+	var mode := OS.get_environment("AUTOPLAY_MODE")
+	if mode == "stress":
+		_mode = "stress"
 
 
 ## Connect to `dayshift` BEFORE it enters the tree, so we catch the very first
@@ -24,7 +43,14 @@ func start_pending(dayshift: Node) -> void:
 	_dayshift = dayshift
 	_dayshift.card_presented.connect(_on_card_presented)
 	_dayshift.day_finished.connect(_on_day_finished)
+	GameState.fatigue_level_changed.connect(_on_fatigue_level_changed)
 	GameState.run_ended.connect(_on_run_ended)
+	# Seed from the current level in case it never changes during the run.
+	_max_fatigue = maxi(_max_fatigue, GameState.fatigue_level())
+
+
+func _on_fatigue_level_changed(level: int) -> void:
+	_max_fatigue = maxi(_max_fatigue, level)
 
 
 func _on_card_presented(card_node) -> void:
@@ -43,12 +69,21 @@ func _act_on_card(card_node) -> void:
 		get_tree().quit(1)
 		return
 
-	var button := _first_enabled_button(card_node)
+	var button := _pick_button(card_node)
 	if button != null:
 		button.pressed.emit()
 	else:
 		# Nothing affordable/ungated: defer the card so the day can still drain.
 		card_node.deferred.emit()
+
+
+## Choose which enabled response to press, per mode. "first" returns the first
+## enabled button (original behaviour); "stress" returns the highest-cost enabled
+## button to deplete reserves as fast as possible. Null if none are enabled.
+func _pick_button(card_node) -> Button:
+	if _mode == "stress":
+		return _highest_cost_enabled_button(card_node)
+	return _first_enabled_button(card_node)
 
 
 ## Find the first non-disabled response Button under the card, or null.
@@ -57,6 +92,23 @@ func _first_enabled_button(card_node) -> Button:
 		if response_box is Button and not response_box.disabled:
 			return response_box
 	return null
+
+
+## Find the enabled response Button whose total spend (time+energy+patience) is
+## greatest, to drain reserves fastest. Null if none are enabled.
+func _highest_cost_enabled_button(card_node) -> Button:
+	var best: Button = null
+	var best_cost := -1
+	for child in _find_response_buttons(card_node):
+		if not (child is Button) or child.disabled:
+			continue
+		var response: Dictionary = child.get_meta("response", {})
+		var cost: Dictionary = response.get("cost", {})
+		var total := int(cost.get("time", 0)) + int(cost.get("energy", 0)) + int(cost.get("patience", 0))
+		if total > best_cost:
+			best_cost = total
+			best = child
+	return best
 
 
 ## Collect every response Button the card built (excludes the defer button,
@@ -85,5 +137,16 @@ func _on_run_ended() -> void:
 
 
 func _finish() -> void:
+	if _mode == "stress":
+		if _max_fatigue < STRESS_MIN_FATIGUE:
+			push_error("AUTOPLAY[stress]: fatigue only reached L%d (< L%d) — burnout path not exercised." % [
+				_max_fatigue, STRESS_MIN_FATIGUE])
+			get_tree().quit(1)
+			return
+		print("AUTOPLAY[stress]: max fatigue reached L%d, completed %d days" % [
+			_max_fatigue, _days_completed])
+		get_tree().quit(0)
+		return
+
 	print("AUTOPLAY: completed %d days, run ended" % _days_completed)
 	get_tree().quit(0)
