@@ -39,6 +39,8 @@ const CARD_SCENE := preload("res://scenes/Card.tscn")
 const INTERSTITIAL_SCENE := preload("res://scenes/Interstitial.tscn")
 const ENDING_SCENE := preload("res://scenes/Ending.tscn")
 const FATIGUE_FX_SCRIPT := preload("res://scenes/FatigueFX.gd")
+const PAUSE_MENU_SCENE := preload("res://scenes/PauseMenu.tscn")
+const MAIN_MENU_SCENE := "res://scenes/MainMenu.tscn"
 
 ## CanvasLayer the narrative overlays (Interstitial / Ending) draw on. Above the
 ## fatigue FX (layer 1) but below the HUD (layer 2) — though the HUD is hidden
@@ -62,9 +64,13 @@ const DAY_FRAME_BY_FATIGUE := [
 @onready var _day_label: Label = %DayLabel
 @onready var _card_container: Control = %CardContainer
 @onready var _hud_layer: CanvasLayer = $HUDLayer
+@onready var _pause_button: Button = %PauseButton
 
 ## The hosted post-effect node; also the source of the shared anim_speed factor.
 var _fatigue_fx: Node = null
+
+## The in-game pause overlay, lazily created (null until first opened / created).
+var _pause_menu: CanvasLayer = null
 
 ## Holds the narrative overlays (Interstitial / Ending), lazily created.
 var _overlay_layer: CanvasLayer = null
@@ -103,7 +109,43 @@ func _ready() -> void:
 	add_child(_fatigue_fx)
 
 	GameState.run_ended.connect(_on_run_ended)
+
+	_setup_pause()
+
 	start_shift()
+
+
+## Wire the corner pause affordance and host the pause overlay. Under headless /
+## AUTOPLAY there is no human to pause, so we hide the button and never create
+## the overlay — pausing the tree there would stall the autoplayer / CI.
+func _setup_pause() -> void:
+	if _is_unattended():
+		if _pause_button != null:
+			_pause_button.visible = false
+		return
+
+	if _pause_button != null:
+		_pause_button.pressed.connect(_on_pause_pressed)
+
+	_pause_menu = PAUSE_MENU_SCENE.instantiate()
+	_pause_menu.quit_to_menu.connect(_on_quit_to_menu)
+	add_child(_pause_menu)
+
+
+## True when no human is driving (headless display or AUTOPLAY): never auto-pause.
+func _is_unattended() -> bool:
+	return OS.get_environment("AUTOPLAY") == "1" or DisplayServer.get_name() == "headless"
+
+
+func _on_pause_pressed() -> void:
+	if _pause_menu != null and not _pause_menu.is_open():
+		_pause_menu.open()
+
+
+## Quit to Menu from the pause overlay: autosave the run, then route to MainMenu.
+func _on_quit_to_menu() -> void:
+	SaveManager.autosave()
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
 ## Current animation-speed multiplier from the fatigue FX (1.0 when fresh, lower
@@ -278,6 +320,12 @@ func _finish_day() -> void:
 		finished_day, GameState.energy, GameState.MAX_ENERGY,
 		GameState.patience, GameState.MAX_PATIENCE])
 
+	# Day-boundary autosave: persist the just-advanced run so Continue resumes the
+	# next day. If the run just ended we instead erase the save (see _present_ending)
+	# so a finished week never resumes into a broken, post-final-day state.
+	if not _run_ended:
+		SaveManager.autosave()
+
 	day_finished.emit(finished_day)
 
 	await _run_post_day_flow(finished_day)
@@ -331,11 +379,10 @@ func _present_ending() -> void:
 	await node.dismissed
 	node.queue_free()
 
-	# TODO(PR-08): route to the real MainMenu here. For now, start a fresh run so
-	# the screen has a graceful way forward instead of a dead end.
-	_set_chrome_visible(true)
-	GameState.new_run()
-	start_shift()
+	# The run is complete: erase the save so Continue can't resume a finished week
+	# into a broken (past-final-day) state, then route to the real MainMenu.
+	SaveManager.erase_save()
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
 ## Lazily create (and return) the CanvasLayer the narrative overlays live on.

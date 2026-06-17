@@ -1,0 +1,130 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0settingsenough0"]
+
+[ext_resource type="Script" path="res://scenes/Settings.gd" id="1_settings"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_settings")
+
+[node name="Backdrop" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.07, 0.07, 0.09, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 64
+
+[node name="Column" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Heading" type="Label" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="MasterRow" type="VBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MasterLabel" type="Label" parent="Margin/Column/MasterRow"]
+layout_mode = 2
+text = "Overall volume"
+
+[node name="MasterSlider" type="HSlider" parent="Margin/Column/MasterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MusicRow" type="VBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="MusicLabel" type="Label" parent="Margin/Column/MusicRow"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="Margin/Column/MusicRow"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="SfxRow" type="VBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SfxLabel" type="Label" parent="Margin/Column/SfxRow"]
+layout_mode = 2
+text = "Sound effects"
+
+[node name="SfxSlider" type="HSlider" parent="Margin/Column/SfxRow"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.05
+value = 0.9
+
+[node name="HapticsCheck" type="CheckButton" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Haptics"
+
+[node name="ReduceMotionCheck" type="CheckButton" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reduce motion"
+
+[node name="TextSizeRow" type="VBoxContainer" parent="Margin/Column"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TextSizeLabel" type="Label" parent="Margin/Column/TextSizeRow"]
+layout_mode = 2
+text = "Text size"
+
+[node name="TextSizeOption" type="OptionButton" parent="Margin/Column/TextSizeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Margin/Column"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EraseButton" type="Button" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Erase progress"
+
+[node name="BackButton" type="Button" parent="Margin/Column"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[node name="ConfirmEraseDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Erase progress"
+ok_button_text = "Erase"
+dialog_text = "This will erase your current run. This can't be undone."

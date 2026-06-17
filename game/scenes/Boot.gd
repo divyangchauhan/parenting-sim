@@ -6,9 +6,10 @@ extends Control
 ## Three launch modes:
 ##   - AUTOPLAY=1 headless : start a run and let Autoplayer drive it end to end.
 ##   - plain headless (CI) : print boot OK and quit 0 WITHOUT autoplaying.
-##   - normal (display)    : start a run and switch to the playable DayShift.
+##   - normal (display)    : go to the MainMenu (Continue / New / Settings / Quit).
 
 const DAYSHIFT_SCENE := "res://scenes/DayShift.tscn"
+const MAIN_MENU_SCENE := "res://scenes/MainMenu.tscn"
 const AUTOPLAYER_SCRIPT := preload("res://scenes/Autoplayer.gd")
 
 
@@ -25,9 +26,8 @@ func _ready() -> void:
 		get_tree().quit(0)
 		return
 
-	# Normal play: launch straight into a fresh, playable day.
-	GameState.new_run()
-	get_tree().change_scene_to_file(DAYSHIFT_SCENE)
+	# Normal play: hand off to the MainMenu (Continue / New / Settings / Quit).
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
 ## Drive the real DayShift + Card + autoloads headlessly to completion.

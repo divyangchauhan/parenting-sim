@@ -62,6 +62,16 @@ func setup(interstitial: Dictionary) -> void:
 ## Reveal each line in turn, then surface the continue hint. The await chain is
 ## the whole pacing of the beat.
 func _reveal_lines(lines: Array) -> void:
+	# Accessibility: reduce_motion shows each line at once (no fade, no type-on).
+	if _reduce_motion():
+		for line in lines:
+			var label := _add_line_label()
+			label.text = String(line)
+			label.modulate.a = 1.0
+		_ready_to_advance = true
+		_hint.modulate.a = 1.0
+		return
+
 	var pace: float = PACE_BY_FATIGUE[clampi(_fatigue_level(), 0, PACE_BY_FATIGUE.size() - 1)]
 
 	for line in lines:
@@ -150,3 +160,11 @@ func _fatigue_level() -> int:
 	if gs != null:
 		return int(gs.fatigue_level())
 	return 0
+
+
+## Accessibility accessor: honor reduce_motion via SaveManager, defensively.
+func _reduce_motion() -> bool:
+	var sm: Object = get_node_or_null("/root/SaveManager")
+	if sm != null:
+		return bool(sm.get_setting("reduce_motion", false))
+	return false
