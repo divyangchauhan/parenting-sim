@@ -77,6 +77,25 @@ func setup(card: Dictionary) -> void:
 	for response in responses:
 		_responses_box.add_child(_build_response_button(response))
 
+	_play_present_cue(source)
+
+
+## A soft cue as the card arrives: a gentle card-settle for every card, plus a
+## restrained, diegetic source hint — a distant work "ping" for work cards and a
+## faint child cue for child cards. Kept quiet on purpose; guarded throughout.
+func _play_present_cue(source: String) -> void:
+	var am := _audio()
+	if am == null:
+		return
+	am.play_sfx("card_settle")
+	match source:
+		"work":
+			am.play_sfx("notify_buzz")
+		"child":
+			am.play_sfx("child_cue")
+		_:
+			pass
+
 
 ## Build one response button, disabled (greyed, non-interactive) when the
 ## response is gated or unaffordable so the option stays visibly present.
@@ -103,9 +122,25 @@ func _build_response_button(response: Dictionary) -> Button:
 	if gated and tone == "warm":
 		button.text += UNAVAILABLE_HINT
 
-	# Intent only — DayShift resolves it.
-	button.pressed.connect(func() -> void: chosen.emit(response))
+	# Intent only — DayShift resolves it. Audio + haptics are feel, added here:
+	# a curt tone gets a flatter, drier tick; warmer/neutral a soft confirm.
+	button.pressed.connect(func() -> void:
+		_play_response_feedback(tone)
+		chosen.emit(response))
 	return button
+
+
+## Soft, restrained press feedback: a gentle tap + light haptic, plus a tonal
+## flavour (curt = a flat negative tick, otherwise a kind little confirm). All
+## guarded — no AudioManager/Haptics, or a missing sound, is simply silent.
+func _play_response_feedback(tone: String) -> void:
+	var am := _audio()
+	if am != null:
+		am.play_sfx("ui_tap")
+		am.play_sfx("negative_tick" if tone == "curt" else "confirm")
+	var haptics := _haptics()
+	if haptics != null:
+		haptics.light()
 
 
 ## Returns true if every response button is disabled — a fully blocked card the
@@ -159,4 +194,20 @@ func _reduce_motion() -> bool:
 
 
 func _on_defer_pressed() -> void:
+	var am := _audio()
+	if am != null:
+		am.play_sfx("ui_tap")
+	var haptics := _haptics()
+	if haptics != null:
+		haptics.light()
 	deferred.emit()
+
+
+## Resolve the AudioManager autoload defensively (null in bare tests).
+func _audio() -> Object:
+	return get_node_or_null("/root/AudioManager")
+
+
+## Resolve the Haptics autoload defensively (null in bare tests).
+func _haptics() -> Object:
+	return get_node_or_null("/root/Haptics")

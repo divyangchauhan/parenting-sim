@@ -33,6 +33,13 @@ func _ready() -> void:
 
 	_refresh_buttons()
 
+	# The quiet front door: the sparse piano motif over a faint room bed. Fades
+	# in; guarded so a missing AudioManager / headless boot is simply silent.
+	var am := _audio()
+	if am != null:
+		am.play_room_ambient(2.0)
+		am.play_menu_music(2.0)
+
 
 ## Continue is only enabled when there's a save to resume.
 func _refresh_buttons() -> void:
@@ -66,7 +73,26 @@ func _start_new_run() -> void:
 
 
 func _go_to_dayshift() -> void:
+	# Let the menu motif fade out as we step into the day; DayShift owns the bed
+	# from here. A press feedback tap keeps the affordance tactile.
+	var am := _audio()
+	if am != null:
+		am.play_sfx("confirm")
+		am.stop_music(0.6)
+	var haptics := _haptics()
+	if haptics != null:
+		haptics.light()
 	get_tree().change_scene_to_file(DAYSHIFT_SCENE)
+
+
+## Resolve the AudioManager autoload defensively (null in bare tests).
+func _audio() -> Object:
+	return get_node_or_null("/root/AudioManager")
+
+
+## Resolve the Haptics autoload defensively (null in bare tests).
+func _haptics() -> Object:
+	return get_node_or_null("/root/Haptics")
 
 
 # ---------------------------------------------------------------------------

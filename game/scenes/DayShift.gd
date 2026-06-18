@@ -177,6 +177,13 @@ func start_shift() -> void:
 
 	_update_day_label()
 	_apply_ambient(GameState.day)
+
+	# Start (or keep) the quiet domestic bed — room-tone + a faint ticking clock.
+	# Idempotent: re-calling across days won't restart the already-playing bed.
+	var am := _audio()
+	if am != null:
+		am.play_room_ambient()
+
 	_present_next()
 
 
@@ -351,9 +358,21 @@ func _finish_day() -> void:
 	if not _run_ended:
 		SaveManager.autosave()
 
+	# Day-boundary feel: a firmer haptic and a brief duck of the bed under the
+	# transition, so the moment lands. Guarded; both are no-ops if unavailable.
+	var haptics := _haptics()
+	if haptics != null:
+		haptics.medium()
+	var am := _audio()
+	if am != null:
+		am.duck(8.0, 0.3)
+
 	day_finished.emit(finished_day)
 
 	await _run_post_day_flow(finished_day)
+
+	if am != null:
+		am.release_duck()
 
 
 ## The post-day transition. If the run has ended, present the ending and stop.
@@ -377,6 +396,11 @@ func _run_post_day_flow(finished_day: int) -> void:
 func _present_interstitial(interstitial: Dictionary) -> void:
 	_set_chrome_visible(false)
 
+	# The between-day beat gets the sparse piano motif under a quieter bed.
+	var am := _audio()
+	if am != null:
+		am.play_menu_music()
+
 	var node: Node = INTERSTITIAL_SCENE.instantiate()
 	_overlay().add_child(node)
 	node.setup(interstitial)
@@ -386,6 +410,10 @@ func _present_interstitial(interstitial: Dictionary) -> void:
 	await node.finished
 	node.queue_free()
 
+	# Hand the screen back to the day: stop the motif, let the bed resume.
+	if am != null:
+		am.stop_music()
+
 	_set_chrome_visible(true)
 
 
@@ -393,6 +421,12 @@ func _present_interstitial(interstitial: Dictionary) -> void:
 ## On dismissal we currently restart a fresh run; real MainMenu routing is PR-08.
 func _present_ending() -> void:
 	_set_chrome_visible(false)
+
+	# The ending sits in the motif; the domestic bed fades away under it.
+	var am := _audio()
+	if am != null:
+		am.stop_ambient(2.0)
+		am.play_menu_music(2.0)
 
 	var ending := EventDeck.select_ending()
 	var node: Node = ENDING_SCENE.instantiate()
@@ -433,3 +467,14 @@ func _set_chrome_visible(visible_now: bool) -> void:
 func _on_run_ended() -> void:
 	_run_ended = true
 	print("run ended")
+
+
+## Resolve the AudioManager autoload defensively (null in bare tests / headless
+## without the autoload). All call sites guard on null.
+func _audio() -> Object:
+	return get_node_or_null("/root/AudioManager")
+
+
+## Resolve the Haptics autoload defensively (null in bare tests).
+func _haptics() -> Object:
+	return get_node_or_null("/root/Haptics")
