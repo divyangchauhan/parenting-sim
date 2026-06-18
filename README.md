@@ -28,6 +28,7 @@ answer, and the mix of exhaustion, guilt, and love underneath.
 - [Architecture](docs/ARCHITECTURE.md)
 - [Features](docs/FEATURES.md)
 - [Building for Android](docs/BUILD_ANDROID.md)
+- [Launch checklist](docs/LAUNCH_CHECKLIST.md)
 - [Task board](tasks.md)
 
 ## Dev
