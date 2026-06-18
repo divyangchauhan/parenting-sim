@@ -234,9 +234,9 @@ func _present_next() -> void:
 
 	var card_node: Node = CARD_SCENE.instantiate()
 	_card_container.add_child(card_node)
-	# CardContainer is a VBoxContainer (alignment centre): the card fills the
-	# column width and centres vertically, sizing to its own content so the
-	# prompt and responses always read together without overflow.
+	# CardContainer is a VBoxContainer: the card fills the column width and sizes to
+	# its own content so the prompt and responses always read together without
+	# overflow, sitting near the top with calm breathing room below.
 	if card_node is Control:
 		(card_node as Control).size_flags_horizontal = Control.SIZE_FILL
 		(card_node as Control).size_flags_vertical = Control.SIZE_SHRINK_CENTER

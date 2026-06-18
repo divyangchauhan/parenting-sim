@@ -22,7 +22,7 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 10 | Audio + Haptics | ✅ | 04 | Done. AudioManager (Master/Music/Ambient/SFX buses, fatigue low-pass + volume sag, ducking, SFX pool), synthesized placeholder sfx/ambient/piano (tools/make_audio.gd, docs/AUDIO.md), haptics wired. Headless-safe. Merged. |
 | 11 | Android export preset + build pipeline | ✅ | 03 | Done. export_presets.cfg (AAB + debug APK), com.divyangchauhan.enough, min API 24 / target 34, arm64+armv7, VIBRATE only; adaptive icons from SVG; android.yml CI; docs/BUILD_ANDROID.md. Preset recognized (template/SDK gate only). Merged. |
 | 12 | Content: full week (~40–60 cards) + interstitials + endings | ✅ | 02,06,07 | Done. 46 cards (child 22/partner 9/self 8/work 7), 9 interstitials, 7 endings, 5 followup chains. Stress play reaches L3. Merged. |
-| 13 | Polish / playtest / balancing pass | 📋 | all | tuning, juice, emotional read |
+| 13 | Polish / playtest / balancing pass | ✅ | all | Done. Pause-icon polish, balance harness (tools/balance_report) + docs/BALANCE.md validating the emotional arithmetic across warm/curt/balanced/defer playstyles, FEATURES reconciled. Merged. |
 
 ## Milestones
 - **M1 — Vertical slice (feel test):** 00–05 + minimal content. One day plays, fatigue felt.
@@ -44,3 +44,8 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
   screenshot incl. L3 burnout look), PR-10 (audio system + procedural placeholders + haptics),
   PR-11 (Android export preset/icons/CI/docs). Added a Screenshot dev-QA harness. Remaining for
   v1.0: PR-13 (polish / playtest / balancing) and a future real-audio + interstitial-art pass.
+- 2026-06-18: **M4 (v1.0 baseline)** done — PR-13 polish + balance validation. **All 14 PRs
+  complete.** The full week plays start→ending with art, audio (placeholder), save, settings,
+  fatigue arc, and is Android-export configured. Remaining before store launch are content/asset
+  passes, not engineering: real audio, interstitial illustration, human playtest + ending tuning
+  (see docs/BALANCE.md), and the manual Android signing/SDK steps in docs/BUILD_ANDROID.md.
