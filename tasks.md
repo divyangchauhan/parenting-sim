@@ -19,7 +19,7 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
 | 07 | Endings | ✅ | 03 | Done with PR-06. Ending screen (no score, tonal), select_ending routing, autoplay traverses to ending. Merged. |
 | 08 | Shell: MainMenu, Settings, Pause, SaveManager | ✅ | 01 | Done. Menu/continue/new, settings (volume/haptics/text-size/reduce-motion), pause, autosave at day boundary. Save tests pass. Merged. |
 | 09 | Art direction: Theme, palette, fonts, typography | ✅ | 04 | Done. Lora+Inter (OFL), warm paper theme, per-day color script, layout fixes; verified by screenshot (fresh + L3 burnout look). Merged. |
-| 10 | Audio + Haptics | 🔨 | 04 | AudioManager buses, ambient/motif, fatigue low-pass, vibration |
+| 10 | Audio + Haptics | ✅ | 04 | Done. AudioManager (Master/Music/Ambient/SFX buses, fatigue low-pass + volume sag, ducking, SFX pool), synthesized placeholder sfx/ambient/piano (tools/make_audio.gd, docs/AUDIO.md), haptics wired. Headless-safe. Merged. |
 | 11 | Android export preset + build pipeline | ✅ | 03 | Done. export_presets.cfg (AAB + debug APK), com.divyangchauhan.enough, min API 24 / target 34, arm64+armv7, VIBRATE only; adaptive icons from SVG; android.yml CI; docs/BUILD_ANDROID.md. Preset recognized (template/SDK gate only). Merged. |
 | 12 | Content: full week (~40–60 cards) + interstitials + endings | ✅ | 02,06,07 | Done. 46 cards (child 22/partner 9/self 8/work 7), 9 interstitials, 7 endings, 5 followup chains. Stress play reaches L3. Merged. |
 | 13 | Polish / playtest / balancing pass | 📋 | all | tuning, juice, emotional read |
@@ -40,3 +40,7 @@ Each PR is a branch `pr/NN-slug` merged to `main`. Keep PRs small and verifiable
   PR-08 (shell + save/continue/settings/pause), PR-12 (full week: 46 cards / 9 interstitials /
   7 endings, 5 followup chains). Full week plays start→ending; stress play reaches fatigue L3.
   Remaining: PR-09 (art/theme), PR-10 (audio/haptics), PR-11 (Android export), PR-13 (polish).
+- 2026-06-18: **M3 (polished build)** done — PR-09 (theme/palette/typography/layout, verified by
+  screenshot incl. L3 burnout look), PR-10 (audio system + procedural placeholders + haptics),
+  PR-11 (Android export preset/icons/CI/docs). Added a Screenshot dev-QA harness. Remaining for
+  v1.0: PR-13 (polish / playtest / balancing) and a future real-audio + interstitial-art pass.
